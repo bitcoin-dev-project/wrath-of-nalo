@@ -1,0 +1,368 @@
+caddy:
+  enabled: true
+nodes:
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-spender
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 29517b4e151a1936f4942300ed377a1d
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ae1113506ce844d46f3ce4f0ddeb97771201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620de51a9b1c416a9ccdbe86d7825d81ca4705fa800493dfb0000df99e48db2511f
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 1
+      push_amt: 0
+      target: aries-router-ln
+    - capacity: 9880307
+      id:
+        block: 500
+        index: 5
+      push_amt: 1804399
+      target: aries-cb-router-ln
+    - capacity: 5442932
+      id:
+        block: 500
+        index: 6
+      push_amt: 1925272
+      target: aries-cb-spender-ln
+    circuitbreaker:
+      enabled: false
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: UXDa+tkmp47Ak7Zp7p+TQ+85Shu3ZExux7h36I6BRV4=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-router
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 9a93f5716232b7fb03a6225c6aa0cc45
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10228cee063b937786d61dfcf2848a88051201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200107abd697abc9ef0f889eee1a7b0e808849501edd8e00cbe231afeca0e2ce67
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 2
+      push_amt: 0
+      target: aries-recipient-ln
+    circuitbreaker:
+      enabled: false
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Ee7aExfeNVOPij58IScFfJHPbljlpTI/M4hPmzTfdv0=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-recipient
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 6ec2705ea41e786bc46324e1f4906665
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ea5a522465fd6579389842b461d95a931201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620bd4b90bac6374691339d9ecdc43f1050fb8f7e827c37cb81e0b66caf0eb9fae5
+    circuitbreaker:
+      enabled: false
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: vPctntVs/hDrX0uTxhEpeVeNbrRysPbMgWo2w44OCgE=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-cb-spender
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: d4e018341fc2ccd98e9deaf9a50b070e
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10666da38a6c0422e11c86b93cd64b2e271201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209bea56965ec06e587ee310e6507fa4979da7b7c9f2e556ffe6c00977394bccb0
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 3
+      push_amt: 0
+      target: aries-cb-router-ln
+    - capacity: 5765423
+      id:
+        block: 500
+        index: 7
+      push_amt: 1541491
+      target: aries-router-ln
+    circuitbreaker:
+      enabled: true
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: vbhEIlHnp6DNrbEjiWhmIyV13ZCYjrg5F+R10ntQwZ4=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-cb-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-cb-router
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: c8cb060e471a08a843e1fa0397e37b71
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10eda377873eafc153f82b9e842aba3d9c1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209aa1cd394a23929b1d97b13e53661f323ed8245723e0c8928f7db79b2cb770f7
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 4
+      push_amt: 0
+      target: aries-cb-recipient-ln
+    - capacity: 7641840
+      id:
+        block: 500
+        index: 8
+      push_amt: 3209672
+      target: aries-router-ln
+    circuitbreaker:
+      enabled: true
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: WQfG6Y7qtXYKIp7RcdLreFpccXHPSRx+B4X97n65WR0=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-cb-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-cb-recipient
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 375195c59729e240deb382a82e7f400a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a102cf0c63f3a92fcf8804fddbd14beaaca1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620f68fce17c6d2f1b3fab03e600e706c4f42848797b09e96a6a617914680cac4ee
+    circuitbreaker:
+      enabled: true
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 4JxBMQMUkaGAtX92yt4ckwE0b3qUKR6Jc/MoZ9M5b0c=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-cb-recipient
+- addnode: []
+  config: 'maxconnections=1000
+
+    uacomment=miner
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 4d2e03948d58c7767e20e83a0d94337c
+  image:
+    tag: 29.0-util
+  ln:
+    lnd: true
+  lnd:
+    extraContainers:
+    - env:
+      - name: LN_VISUALIZER_API_URL
+        value: http://127.0.0.1:5647
+      image: bitcoindevproject/lnvisualizer:latest
+      name: lnvisweb
+      ports:
+      - containerPort: 80
+        name: web
+        protocol: TCP
+    - env:
+      - name: LND_CERT_FILE
+        value: /tls.cert
+      - name: LND_MACAROON_FILE
+        value: /root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+      - name: LND_SOCKET
+        value: localhost:10009
+      - name: LNVIS_RESYNCTIMER
+        value: '* * * * *'
+      image: maxkotlan/ln-visualizer-api:v0.0.28
+      name: lnvisapi
+      ports:
+      - containerPort: 5647
+        name: api
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /root/.lnd/
+        name: shared-volume
+      - mountPath: /tls.cert
+        name: config
+        subPath: tls.cert
+  name: miner
+  startupProbe:
+    exec:
+      command:
+      - /bin/sh
+      - -c
+      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cVQkvvpa1691A5GDwR4hyGptpv6zsyjFvd3rdYEy6LACr1McVijx\)#0m6hkt3h\"\,\"timestamp\":0}]
+    failureThreshold: 10
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 60
+plugins:
+  preDeploy:
+    lnvisualizer:
+      entrypoint: ../../plugins/lnvisualizer
+      instance: miner
+      name: lnd-ln
+services:
+- host: lnvisualizer.default
+  path: /lnvisualizer/
+  port: 80
+  title: LN Visualizer Web UI

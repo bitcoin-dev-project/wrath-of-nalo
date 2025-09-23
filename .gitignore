@@ -1,0 +1,4 @@
+kubeconfigs/
+scripts/channels.sh
+scenarios/ln_channel_jam_admin.py
+__pycache__/
