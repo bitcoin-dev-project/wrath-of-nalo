@@ -1,0 +1,194 @@
+caddy:
+  enabled: true
+nodes:
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0000
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 2353e0399436f844ff83c3ae5a7d50e3
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a108eee59fb8f25cc56d081908c9d5d0fb61201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b2b28344f88ff3f3cf02b55a4c8dac8a76c0eb7d43cd09585b72236d3a38d120
+    channels:
+    - capacity: 300000
+      id:
+        block: 500
+        index: 5
+      push_amt: 150000
+      target: tank-0003-ln
+    config: alias=tank-0000
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: f6iCboG+HB6EJ44N9yUIuf/QIur1I/ri0nPstyTNXvY=
+  name: tank-0000
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0001
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 529a66360f15f17416dee45056add2b4
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10c69bc13a879ed38ba9d0a9afbdf33dbd1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620506f837afd2abe5d3088950b53d4f72eebb468d62d4d765a571ad5b5ed32d230
+    channels:
+    - capacity: 300000
+      id:
+        block: 500
+        index: 3
+      push_amt: 150000
+      target: tank-0000-ln
+    - capacity: 300000
+      id:
+        block: 500
+        index: 6
+      push_amt: 150000
+      target: tank-0002-ln
+    config: alias=tank-0001
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 3CaAgU65xfgLoNJHnCseD0qKcpNNds7+7yBqG6aMAQU=
+  name: tank-0001
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0002
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 5a1800398c081dfabc3178ee1aaf9f65
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10626571ccb617967454f68682317281631201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620455db3b1c5c6d21a80dcbb838e8f30b50ba173843af3227ae182ef127acf051d
+    channels:
+    - capacity: 300000
+      id:
+        block: 500
+        index: 2
+      push_amt: 150000
+      target: tank-0000-ln
+    config: alias=tank-0002
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: p709iLt0gewh15P1cisy1jhr0EzwzpEwUX4ZvmplTCU=
+  name: tank-0002
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0003
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 1e464e4495770c77c98a2aa64fde4d53
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101df90f8c4c8558bc92d095c97a7c00931201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206f302b1c2986a661245d1ad34cfd732768598991510638103a1b39253e744a8a
+    channels:
+    - capacity: 300000
+      id:
+        block: 500
+        index: 1
+      push_amt: 150000
+      target: tank-0002-ln
+    - capacity: 300000
+      id:
+        block: 500
+        index: 4
+      push_amt: 150000
+      target: tank-0001-ln
+    config: alias=tank-0003
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: C2FNryEFpTGG6Ohcw7Zu3wjvtILvDV6j9RNbKFPM90U=
+  name: tank-0003
+- addnode: []
+  config: 'maxconnections=1000
+
+    uacomment=miner
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: d0024ceabd8242b390e8ab2b8c7feefc
+  image:
+    tag: 29.0-util
+  ln:
+    lnd: true
+  lnd:
+    extraContainers:
+    - env:
+      - name: LN_VISUALIZER_API_URL
+        value: http://127.0.0.1:5647
+      image: bitcoindevproject/lnvisualizer:latest
+      name: lnvisweb
+      ports:
+      - containerPort: 80
+        name: web
+        protocol: TCP
+    - env:
+      - name: LND_CERT_FILE
+        value: /tls.cert
+      - name: LND_MACAROON_FILE
+        value: /root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+      - name: LND_SOCKET
+        value: localhost:10009
+      - name: LNVIS_RESYNCTIMER
+        value: '* * * * *'
+      image: maxkotlan/ln-visualizer-api:v0.0.28
+      name: lnvisapi
+      ports:
+      - containerPort: 5647
+        name: api
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /root/.lnd/
+        name: shared-volume
+      - mountPath: /tls.cert
+        name: config
+        subPath: tls.cert
+  name: miner
+  startupProbe:
+    exec:
+      command:
+      - /bin/sh
+      - -c
+      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cPoxnLzopf5TGzm4VoPGa7V2C41JSaNusgneZpKYAy3yLCnHFk8c\)#e2k5g50j\"\,\"timestamp\":0}]
+    failureThreshold: 10
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 60
+plugins:
+  preDeploy:
+    lnvisualizer:
+      entrypoint: ../../plugins/lnvisualizer
+      instance: miner
+      name: lnd-ln
+services:
+- host: lnvisualizer.default
+  path: /lnvisualizer/
+  port: 80
+  title: LN Visualizer Web UI
