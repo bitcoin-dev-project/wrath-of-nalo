@@ -14,12 +14,6 @@ class LNActivity(Commander):
     def add_options(self, parser):
         parser.description = "Send LN payments from one half of the network to the other"
         parser.usage = "warnet run /path/to/ln_activity.py [options]"
-        # parser.add_argument(
-        #     "--allnodes",
-        #     dest="allnodes",
-        #     action="store_true",
-        #     help="When true, generate blocks from all nodes instead of just nodes[0]",
-        # )
 
     def run_test(self):
         sources = []
@@ -59,11 +53,8 @@ class LNActivity(Commander):
             thread.start()
         all(thread.join() is None for thread in payment_threads)
 
-
-
 def main():
     LNActivity().main()
-
 
 if __name__ == "__main__":
     main()

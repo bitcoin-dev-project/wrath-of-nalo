@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+
+import threading
+from commander import Commander
+from time import sleep
+
+# After 500 regtest blocks, miner will have about 13000 BTC
+# Opening as much as 500 channels, 10 BTC each, leaves 8000
+# Providing for as many as 40 armada nodes, is 200 each
+# Leave a huge margin
+FUNDS_PER_TANK = 100
+
+class ArmArmada(Commander):
+    def set_test_params(self):
+        # This is just a minimum
+        self.num_nodes = 0
+        self.miners = []
+
+    def add_options(self, parser):
+        parser.description = "Send initial funds to all armada LN nodes"
+        parser.usage = "warnet run /path/to/arm_armada.py"
+
+    def run_test(self):
+        self.log.info("Getting Armada LN wallet addresses...")
+        tanks = [ln for ln in self.lns.values() if "armada" in ln.name]
+        self.log.info(f"Armada tanks:\n{[f'{ln.name}.{ln.namespace}' for ln in tanks]}")
+        outputs = {}
+
+        def get_ln_addr(self, ln):
+            while True:
+                try:
+                    address = ln.newaddress()
+                    self.log.info(f"Got wallet address {address} from {ln.name}")
+                    outputs[address] = FUNDS_PER_TANK
+                    break
+                except Exception as e:
+                    self.log.info(
+                        f"Couldn't get wallet address from {ln.name} because {e}, retrying in 5 seconds..."
+                    )
+                    sleep(5)
+
+        addr_threads = [
+            threading.Thread(target=get_ln_addr, args=(self, ln)) for ln in tanks
+        ]
+        for thread in addr_threads:
+            thread.start()
+
+        all(thread.join() is None for thread in addr_threads)
+        self.log.info(f"Got {len(outputs)} addresses from {len(self.lns)} LN nodes")
+
+        self.log.info("Funding Armada LN wallets...")
+
+        self.tanks["miner"].sendmany(amounts=outputs)
+        self.generatetoaddress(self.tanks["miner"], 1, self.tanks["miner"].getnewaddress())
+
+
+def main():
+    ArmArmada().main()
+
+if __name__ == "__main__":
+    main()
