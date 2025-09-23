@@ -1,0 +1,140 @@
+caddy:
+  enabled: true
+nodes:
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-gossip-vuln
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: f5fc81c638be31b307f48d6e74d3e278
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b9d6baa65f21963f7edbfcee3fd840f91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620df1c15e1e6d532f5d2c6a18d3cb39505e817346156501a966ebc90775c697047
+    circuitbreaker:
+      enabled: false
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: color=#e6194b
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: lx6GU2aKPS9z3lEkgd2nAIw3ImaxSrhtlMsdBueTKIg=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: aries-gossip-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-onion-vuln
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 83b3c182878b552135b6a5b7a814340e
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10aa26093fa7688e1439cb62af8f2bff5e1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062093d2f1e972b0f2ec622fb99c03d5e9810167444c2167fac3b76668c7c0dc3e5e
+    circuitbreaker:
+      enabled: false
+      image: bitcoindevproject/circuitbreaker:v0.5.0
+    config: 'color=#e6194b
+
+      ignore-historical-gossip-filters=true'
+    image:
+      tag: v0.16.4-beta
+    macaroonRootKey: lH9PeGTgUsKBJm5kvOnCY5jxQwiltq+OhdakCVrDvS4=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: aries-onion-vuln
+- addnode: []
+  config: 'maxconnections=1000
+
+    uacomment=miner
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: a8a17e40ecc5fbcd4a931d800989a619
+  image:
+    tag: 29.0-util
+  ln:
+    lnd: true
+  lnd:
+    extraContainers:
+    - env:
+      - name: LN_VISUALIZER_API_URL
+        value: http://127.0.0.1:5647
+      image: bitcoindevproject/lnvisualizer:latest
+      name: lnvisweb
+      ports:
+      - containerPort: 80
+        name: web
+        protocol: TCP
+    - env:
+      - name: LND_CERT_FILE
+        value: /tls.cert
+      - name: LND_MACAROON_FILE
+        value: /root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+      - name: LND_SOCKET
+        value: localhost:10009
+      - name: LNVIS_RESYNCTIMER
+        value: '* * * * *'
+      image: maxkotlan/ln-visualizer-api:v0.0.28
+      name: lnvisapi
+      ports:
+      - containerPort: 5647
+        name: api
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /root/.lnd/
+        name: shared-volume
+      - mountPath: /tls.cert
+        name: config
+        subPath: tls.cert
+  name: miner
+  startupProbe:
+    exec:
+      command:
+      - /bin/sh
+      - -c
+      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cQLneDyiPV64LuW29iXq26u1GjLvCVpmekVofKCUkTxeLiRndwLY\)#u3d42ykd\"\,\"timestamp\":0}]
+    failureThreshold: 10
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 60
+plugins:
+  preDeploy:
+    lnvisualizer:
+      entrypoint: ../../plugins/lnvisualizer
+      instance: miner
+      name: lnd-ln
+services:
+- host: lnvisualizer.default
+  path: /lnvisualizer/
+  port: 80
+  title: LN Visualizer Web UI
