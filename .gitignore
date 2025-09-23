@@ -1,0 +1,5 @@
+kubeconfigs/
+scripts/channels.sh
+scenarios/JAM_HINT.py
+scenarios/P2P_HINT.py
+__pycache__/

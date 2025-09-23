@@ -1,0 +1,13 @@
+namespaces:
+- name: wargames-aries
+- name: wargames-taurus
+- name: wargames-gemini
+- name: wargames-cancer
+- name: wargames-leo
+- name: wargames-virgo
+- name: wargames-libra
+- name: wargames-scorpio
+- name: wargames-sagittarius
+- name: wargames-capricorn
+- name: wargames-aquarius
+- name: wargames-pisces

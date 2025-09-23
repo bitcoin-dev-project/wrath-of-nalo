@@ -1,0 +1,4221 @@
+caddy:
+  enabled: true
+nodes:
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 30a0b946e708ca32e2992fdb9834e09e
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a106c6d301290f6685bd855d913913efbe91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620a510dd9656061109b4478b508a0df651114183fdd6193221680a0096b1707a7a
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 1
+      push_amt: 0
+      target: aries-router-ln
+    - capacity: 9307051
+      id:
+        block: 500
+        index: 58
+      push_amt: 1520206
+      target: capricorn-vuln-ln
+    - capacity: 8395313
+      id:
+        block: 500
+        index: 106
+      push_amt: 1106843
+      target: scorpio-vuln-ln
+    - capacity: 3677289
+      id:
+        block: 500
+        index: 126
+      push_amt: 582536
+      target: gemini-spender-ln
+    - capacity: 4116377
+      id:
+        block: 500
+        index: 165
+      push_amt: 1265465
+      target: tank-0084-ln
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 5hrhdNBVN/ECmMTxYy5IjrgSIibyvPJx1EtkZwGxiSc=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 5dc1f5c03373534260403e1502aaf249
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1062c542d59ab08c63efb69c3fc02ece701201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620e7b942076624d5e8b4b32be48b434c277b6bb36092ef26a8fbdb0de92b75eee2
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 2
+      push_amt: 0
+      target: aries-recipient-ln
+    - capacity: 2399948
+      id:
+        block: 500
+        index: 49
+      push_amt: 1048482
+      target: tank-0083-ln
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: fVQrRlJS1uBkETDWMHFDyAeNag8RucqiaSKyCD25l9I=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c5a9428c1c933ec5137ae948e1847231
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b15aff0a6cc5765cec75acdc21cab9241201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209c1b4fc84be68a963cafde110c508e1d33f491be0cddb323825d1e8d50911288
+    config: color=#e6194b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 8lZE72g8nPAZWaOqvRE9dfBbwJrahkGX0U9ZD282I30=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aries-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aries-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 20ae830275e774991e8f5474c325ddf3
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a109c051144d665941e5258c08f7ff0f2611201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062033db922fc1ee2418a9f9a6608f9236d827c862af60b0717585f8d217c6c4259a
+    channels:
+    - capacity: 6652410
+      id:
+        block: 500
+        index: 27
+      push_amt: 3058636
+      target: leo-vuln-ln
+    - capacity: 5380597
+      id:
+        block: 500
+        index: 45
+      push_amt: 944135
+      target: aries-spender-ln
+    - capacity: 7354787
+      id:
+        block: 500
+        index: 128
+      push_amt: 1535556
+      target: libra-vuln-ln
+    - capacity: 1734596
+      id:
+        block: 501
+        index: 19
+      push_amt: 638957
+      target: tank-0072-ln
+    config: color=#e6194b
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: vGuhdxm8p5W+Cbc0x+tm1ERop1A7G66sbFTtFRxqoDM=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: aries-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=taurus-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 8d94fc6d98e97694369230b3d87dde1e
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10925db89c2ce2b8056f58089decde1d691201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620f15a264a32beb3ecf356840cc4586efab2cf340c10bfe98697a6c5fba33f40d0
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 3
+      push_amt: 0
+      target: taurus-router-ln
+    - capacity: 2180444
+      id:
+        block: 500
+        index: 28
+      push_amt: 628639
+      target: tank-0072-ln
+    - capacity: 5529481
+      id:
+        block: 500
+        index: 70
+      push_amt: 1675902
+      target: libra-spender-ln
+    - capacity: 6381610
+      id:
+        block: 500
+        index: 89
+      push_amt: 1333498
+      target: sagittarius-router-ln
+    - capacity: 7516704
+      id:
+        block: 500
+        index: 181
+      push_amt: 2113245
+      target: tank-0081-ln
+    config: color=#3cb44b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: QRbLY5dnQDYFZSMULx/a0V9+Ba9Di6TUwkVrEVELl10=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: taurus-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=taurus-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c85001805272a8864c8a00634bb20750
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a106c6f4c751eccdfcebafd889706be201b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006205de2911d8d3a87cf86893a624a6f1c76a9ac1de7a1c0aa70a5fad03f96754a3f
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 4
+      push_amt: 0
+      target: taurus-recipient-ln
+    - capacity: 2547568
+      id:
+        block: 500
+        index: 148
+      push_amt: 1226075
+      target: tank-0055-ln
+    config: color=#3cb44b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 9uZZOnU/t9yhF7OER4zfX7Jd6S1tr8qO/tlAQ6ILy60=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: taurus-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=taurus-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: bca6d6e626be389979882455e8b7d7a3
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1087facbae091de1f1c155a15dd91173b41201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062021d68c147ba488ae53cb5dac2e73dcc37cbd3b08f1248fdc54be9b6fdb0e7a33
+    config: color=#3cb44b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: UG2XPKBGDQOb+9gkl7uWh2dpkNrOiBd/8HnKeNSjKqs=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: taurus-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=taurus-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 29b5f11cd19a92c0d4b2eece16227955
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a107a42805cabcae4473727e10b18a9096a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006203f47f56f28c8edd9f8926823211812a819f3310ce4f1ed37356e704333d07334
+    channels:
+    - capacity: 7545800
+      id:
+        block: 500
+        index: 98
+      push_amt: 3728747
+      target: tank-0076-ln
+    - capacity: 8899200
+      id:
+        block: 500
+        index: 133
+      push_amt: 2906817
+      target: tank-0058-ln
+    config: color=#3cb44b
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: SpwUp8yC4VO+Ieyu5IyToZ8DCT9UQcE2zvmkku1xSvQ=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: taurus-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=gemini-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: ced2e4b41e6f7b731b8839736212a34a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a105a1df2fccd9953e02b50c56062d61dd71201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006208b43ca684d40b0e311d90cc6b54d12f41d89a748f936d53e187f7f7822b310f2
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 5
+      push_amt: 0
+      target: gemini-router-ln
+    config: color=#ffe119
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: LpbC0hBhfixAURz0iq9Ncs63vdpatTV+ofQcaKLSWrU=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: gemini-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=gemini-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 20147ae92c1b044a4d12b5a706e88e43
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10623c02a7cbea0fba6659f79ca14268ef1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062073acb2ca280f0cfdf5be7f30b42995884a4cca325f9ab5e3fbbfce8bd4235662
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 6
+      push_amt: 0
+      target: gemini-recipient-ln
+    config: color=#ffe119
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: /tkHeldTzG/8r9gexs7ecejp9GVWF2mcCYkfko/MKZk=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: gemini-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=gemini-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 4502872a72574a41330eaae7ac935d51
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10dc4963c6786b8573f6b83336c752ca6b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006205be184bfe619e0c19d21819c75f3309ca338b79a73eac3375431333946797b0e
+    config: color=#ffe119
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: ZScR/n54HVwsVQGUNRtBvY8GVqzDMsix4DiSTovk3kI=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: gemini-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=gemini-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: f3dd725aa341ec153fd43aaffb87e947
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a100fcdd4284cf4543de3ff05b8fc5084061201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006201b7271a7ec8bcdb879ba1dea9c8e088abd2e5f21347529a5429c9b30d6f5345e
+    channels:
+    - capacity: 9990871
+      id:
+        block: 500
+        index: 50
+      push_amt: 2386966
+      target: aquarius-spender-ln
+    - capacity: 4765853
+      id:
+        block: 500
+        index: 146
+      push_amt: 1292476
+      target: tank-0068-ln
+    config: color=#ffe119
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: drgSa3SgbEmT3QWWIfj2cXa5T0gNNKvaOhvQTpJuers=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: gemini-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=cancer-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 8c6f46117eb6528107df0a246f710ab5
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b2c7d594f9b3d7071cf855e16e6c626a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006202b774a0199dae16d9578cb4be279bd26edcb16cb1c6fd43db112295c8fc255ed
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 7
+      push_amt: 0
+      target: cancer-router-ln
+    - capacity: 8688252
+      id:
+        block: 500
+        index: 69
+      push_amt: 1739052
+      target: tank-0063-ln
+    - capacity: 6817294
+      id:
+        block: 500
+        index: 101
+      push_amt: 2301810
+      target: tank-0072-ln
+    - capacity: 2593389
+      id:
+        block: 500
+        index: 134
+      push_amt: 1019862
+      target: tank-0066-ln
+    config: color=#4363d8
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: yM5M3agiWuYZA6GT/ZNG+8p8dpSDngxOLFQS9iwZMoo=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: cancer-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=cancer-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: fc05eb2bf7edc89a8a58075e64d926e3
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1097a9cbb8cb46b821ab4ff841d2cf9b1a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206d948ce8a217749855515633d909963cc77dff93830fbf793a1e6685fe585ef8
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 8
+      push_amt: 0
+      target: cancer-recipient-ln
+    - capacity: 4301437
+      id:
+        block: 500
+        index: 47
+      push_amt: 1175195
+      target: tank-0065-ln
+    config: color=#4363d8
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: U7NWsKjL3TXH2UGVfjLsaB7tVvfqsANyydkH6QR3R5U=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: cancer-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=cancer-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 261a2d18e833f071f9e424af67355d66
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101c5c03c3f83cfcb210d76097b5ff62a61201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062049efd49f4ccd181fa88fa2f9d66c384f3a10a395408bb2379adc840a86701d2a
+    config: color=#4363d8
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: NlkUHYDir/Ol03D1Nux5JuYHl8vSeoU/6QDRGnjEc8w=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: cancer-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=cancer-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 708c6b06424cb00f22367b55e41069f8
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a108b543ecfc77f4b6628d5f6ba970a5d561201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062071da5fed86e7bddaef9b8ce0b953a946e70fe9707ffa3123a1356626ab58ca24
+    channels:
+    - capacity: 4177776
+      id:
+        block: 500
+        index: 200
+      push_amt: 1037938
+      target: tank-0063-ln
+    config: color=#4363d8
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: w/Ic40kaVrreKwJUO5ah3mjOvFj4NV9IinPcoIzmfFE=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: cancer-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=leo-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 2aaefcd642c7270274e6693099ed1de9
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a107c572786f93df89c46ef650fbda6cf021201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b5a5453bdb474100e87d6a134b9b7af9d1b21a0fcab4631c15815ffdc81cedec
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 9
+      push_amt: 0
+      target: leo-router-ln
+    - capacity: 4572743
+      id:
+        block: 500
+        index: 72
+      push_amt: 807136
+      target: tank-0081-ln
+    - capacity: 1154307
+      id:
+        block: 500
+        index: 94
+      push_amt: 219401
+      target: tank-0062-ln
+    - capacity: 9633876
+      id:
+        block: 500
+        index: 137
+      push_amt: 2530510
+      target: tank-0050-ln
+    - capacity: 8918166
+      id:
+        block: 500
+        index: 176
+      push_amt: 2275406
+      target: aries-router-ln
+    - capacity: 5169801
+      id:
+        block: 501
+        index: 6
+      push_amt: 2489449
+      target: tank-0079-ln
+    config: color=#f58231
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: k33DNs7LNx8yEpmT7PrUWW7BmuanuyN+meqg6kpBuTo=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: leo-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=leo-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: d1823561e702987dcec5ea64c4676b28
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10867167980c108572cefde53cf51890e91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620d35a821073b52205481de8d9fb0597c52ceadb6e253a56defe09ae2dba336e19
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 10
+      push_amt: 0
+      target: leo-recipient-ln
+    - capacity: 6614986
+      id:
+        block: 500
+        index: 60
+      push_amt: 2337450
+      target: tank-0086-ln
+    - capacity: 4747908
+      id:
+        block: 500
+        index: 87
+      push_amt: 2253550
+      target: tank-0074-ln
+    - capacity: 3205322
+      id:
+        block: 500
+        index: 141
+      push_amt: 928613
+      target: scorpio-router-ln
+    - capacity: 4539417
+      id:
+        block: 500
+        index: 144
+      push_amt: 1744429
+      target: capricorn-router-ln
+    config: color=#f58231
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: kMJ6fuJSqeZgW2+KndalsgSUvx+lfFgP5RYStNvL1+0=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: leo-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=leo-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 6d362cd38aae419fe9ab1b5f79a47161
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101d33e50098f4fc6544f42784adc02a871201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206e7cdc3932d5c7f655106a2f48302d435cb16f1e403b66c09b2ff887db926635
+    config: color=#f58231
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: A0Wxv+W99YEBRZOUPWQGMjTAe9wcbfi5VzSRcV9bB94=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: leo-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=leo-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: bcabfac9f1abcd08a70688028fe47d59
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a100f4a311a2d9ed7992956782c5e9b3e691201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006207f2783e35c8ac40d6cf296176d13e235359daaf2f6b3daa9e6d9d0909286a6ff
+    config: color=#f58231
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: PRvZhpeiigUl5ChXr0uqH35A2sjyhQqbHEwbOKOCKq4=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: leo-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=virgo-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 75de7d39cfbd280cc31ed0831e322397
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1061da94784292140d096388a7e49aec0e1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006205c3e8a4d086f5cf12a81437acb8bd23002b2aa7862afab21f02487b65adce446
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 11
+      push_amt: 0
+      target: virgo-router-ln
+    - capacity: 2740737
+      id:
+        block: 500
+        index: 30
+      push_amt: 1131470
+      target: tank-0080-ln
+    - capacity: 1200192
+      id:
+        block: 500
+        index: 99
+      push_amt: 386789
+      target: capricorn-router-ln
+    - capacity: 9961247
+      id:
+        block: 500
+        index: 159
+      push_amt: 2061430
+      target: capricorn-spender-ln
+    - capacity: 5553605
+      id:
+        block: 500
+        index: 163
+      push_amt: 1626382
+      target: aquarius-router-ln
+    - capacity: 7386832
+      id:
+        block: 500
+        index: 180
+      push_amt: 2631504
+      target: tank-0053-ln
+    config: color=#911eb4
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Gq+4+GWYcViTJIaX6peX2iM9dG+8fBsIFmT96RDfTpo=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: virgo-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=virgo-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 82a59b64eb57c4a7d7a05558de704828
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10038fdb63ff52c0bd8a7935ade5c3c1451201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200169614f5a7431e8a35b5330b0eb6abf04135fe8b1e7ccccccef1fce95ea9cd5
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 12
+      push_amt: 0
+      target: virgo-recipient-ln
+    - capacity: 6966433
+      id:
+        block: 500
+        index: 129
+      push_amt: 2083263
+      target: tank-0068-ln
+    - capacity: 8606012
+      id:
+        block: 500
+        index: 168
+      push_amt: 3445333
+      target: aquarius-vuln-ln
+    config: color=#911eb4
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: dMAwtGcLCZuWFiujwRcUA1T09N09EHS6GzIqajZ1Q2s=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: virgo-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=virgo-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 1e2dc39f0fc4bce09b3c03002540a6da
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a106b76207507f5bc84b8da05f1d8762c891201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206728d3c3a6f72fa4484d44b75cb9ca4eb768aa7e5203c4b43d75df373a7e067b
+    config: color=#911eb4
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: kTEL2Ha8tawZzJc34vAU1QbkCH1//nJ9b9XHx6BUk9w=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: virgo-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=virgo-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 3f5fbc46818ab647483a003c288991e1
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a100df9e53bd392cacfced04bcd406491351201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620a353730510977d76a6036efcec799d8acec45113f1196d2892f2a0429cd9e3dd
+    channels:
+    - capacity: 6303259
+      id:
+        block: 500
+        index: 188
+      push_amt: 2310165
+      target: cancer-spender-ln
+    config: color=#911eb4
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: ZFNZsgsOABTPRHeomokrlDskl+6wjwekIBoFiCa77c8=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: virgo-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=libra-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 6cd1dd4d06646762fe3890383d6fd8fd
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1037bfff85de0b765aa1422d4e23c677bf1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006205cbd1d10add1d33d6baf80ecb1101c662202bc9eaeb4d887441d40ff73c23e47
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 13
+      push_amt: 0
+      target: libra-router-ln
+    - capacity: 2836866
+      id:
+        block: 500
+        index: 56
+      push_amt: 960999
+      target: tank-0071-ln
+    - capacity: 1779947
+      id:
+        block: 500
+        index: 140
+      push_amt: 754326
+      target: scorpio-router-ln
+    config: color=#46f0f0
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: l+KLYFtJYllJ31B6sVXDZGRmhasKYTuOfpxTzzp1ycg=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: libra-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=libra-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 72d0110072a2ae94a7510c9b5cced1ba
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10f8f36b90033a98a38d8b95b93298c06a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006201036bab9babfc43a90bd16a59f1834e56706f9a562f34c66c806fbcb44f28847
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 14
+      push_amt: 0
+      target: libra-recipient-ln
+    - capacity: 5447298
+      id:
+        block: 500
+        index: 82
+      push_amt: 1452037
+      target: pisces-router-ln
+    - capacity: 1295256
+      id:
+        block: 500
+        index: 143
+      push_amt: 486963
+      target: tank-0077-ln
+    - capacity: 8807541
+      id:
+        block: 500
+        index: 151
+      push_amt: 1673311
+      target: tank-0078-ln
+    - capacity: 3583331
+      id:
+        block: 500
+        index: 154
+      push_amt: 559886
+      target: leo-spender-ln
+    - capacity: 8817638
+      id:
+        block: 500
+        index: 171
+      push_amt: 4038740
+      target: capricorn-vuln-ln
+    - capacity: 3001456
+      id:
+        block: 500
+        index: 173
+      push_amt: 728551
+      target: tank-0069-ln
+    config: color=#46f0f0
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: JpguW+W5FNUXtUpEq65/g7eZHYz2vqkkRXLYhl2Aw9E=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: libra-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=libra-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 2d97370439a10c83c73d010fee44d448
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ad83cbea8513aee77a3b305c89ee26671201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620778466b8bf0ad03bcc32caef316775094cd5173725bb536cd3ade150e9e2d17b
+    config: color=#46f0f0
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: RhK+vI1Evx63zxFoXL4UGY3cY6UlOJpMMFDhRafg8Eg=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: libra-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=libra-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 8666f43571a63aac757930d72c1caa9f
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1007a15d55a083fc1aee4f8c2ff03796131201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062009fa59b87572cd0445642eed34ce495189bd5c349782f2023163b039879ad280
+    channels:
+    - capacity: 9108166
+      id:
+        block: 500
+        index: 59
+      push_amt: 2382428
+      target: tank-0075-ln
+    - capacity: 8533826
+      id:
+        block: 500
+        index: 62
+      push_amt: 4115974
+      target: tank-0067-ln
+    - capacity: 3805689
+      id:
+        block: 500
+        index: 81
+      push_amt: 1066100
+      target: tank-0074-ln
+    config: color=#46f0f0
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: P0vZQKLbtG2PCZbq/ZqVXIwNojHKR6SSv77NPtLOR6E=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: libra-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=scorpio-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c01068db28e9cca896e5f9551739c14f
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a106e7a9df2bdc01acf36162d0085d2ddb71201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b9e8e519e744a6febaf30514997a8f34526584998ec20a14d8bf61361ba6f1de
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 15
+      push_amt: 0
+      target: scorpio-router-ln
+    - capacity: 4122074
+      id:
+        block: 500
+        index: 131
+      push_amt: 915003
+      target: tank-0049-ln
+    - capacity: 6357311
+      id:
+        block: 500
+        index: 135
+      push_amt: 2969783
+      target: aries-vuln-ln
+    config: color=#f032e6
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: vhaxUDU+r3855qs/RdivlqSd6pMYGWHj1GyYCkCKmdY=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: scorpio-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=scorpio-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 5d6a12c966d0048c50a9bd7e395c0e72
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a104869d45e2e2c9c1083fa2394206a83201201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006204668a2391660c401b3a9f867c414a094993868f41f2add0506fabea38fdc2463
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 16
+      push_amt: 0
+      target: scorpio-recipient-ln
+    - capacity: 5111912
+      id:
+        block: 500
+        index: 33
+      push_amt: 2126134
+      target: tank-0062-ln
+    - capacity: 7018673
+      id:
+        block: 500
+        index: 57
+      push_amt: 1516095
+      target: tank-0086-ln
+    - capacity: 4698933
+      id:
+        block: 500
+        index: 86
+      push_amt: 2275580
+      target: virgo-spender-ln
+    - capacity: 5127967
+      id:
+        block: 500
+        index: 97
+      push_amt: 980799
+      target: tank-0049-ln
+    - capacity: 9499485
+      id:
+        block: 500
+        index: 100
+      push_amt: 2021798
+      target: gemini-vuln-ln
+    - capacity: 1053484
+      id:
+        block: 500
+        index: 122
+      push_amt: 249003
+      target: aquarius-router-ln
+    config: color=#f032e6
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Ymi2h3r1QzHnrWxa0jGP6pSqFsSgmIOb/vj/OSuDRek=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: scorpio-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=scorpio-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c8a75bffe91d6502d60e87c17545d613
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10c27ee932678fc8838302c92e7bd21f731201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620d7b739c9f7548ed82b1c1fd3db2543cc62d045b48099a6a798d7b662348fa05c
+    config: color=#f032e6
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: d6jXn9iL+ynZjrh3wB1lxobzZYVuktdVRRzQIyHGwos=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: scorpio-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=scorpio-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 40da00c37e5f8748e058237d3b01e4ec
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1070f069616afda2323d1f2eb734a9238a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620f9f8625a33b5552193bdd57f5c860add0e1338d0e4feb4ddf768b6cd990e0c6f
+    channels:
+    - capacity: 6232164
+      id:
+        block: 500
+        index: 174
+      push_amt: 1138858
+      target: tank-0070-ln
+    - capacity: 6010056
+      id:
+        block: 500
+        index: 194
+      push_amt: 1432216
+      target: cancer-vuln-ln
+    config: color=#f032e6
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: GSP5291/V9oa0MJisB6AwVycmKk1jAvfC+AqOHHE27c=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: scorpio-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=sagittarius-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 365e0fd9eb679f0550bbe01f6f53843b
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1000f1cd87b53b5f05a36eba3caa05b25a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620971b66a65514a52556880b87f82bf907b6fb8b65b7a356f6447efcd767cd87a8
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 17
+      push_amt: 0
+      target: sagittarius-router-ln
+    - capacity: 9601055
+      id:
+        block: 500
+        index: 53
+      push_amt: 1565688
+      target: tank-0064-ln
+    - capacity: 1901751
+      id:
+        block: 500
+        index: 80
+      push_amt: 357032
+      target: tank-0086-ln
+    - capacity: 6016209
+      id:
+        block: 500
+        index: 142
+      push_amt: 2636889
+      target: tank-0051-ln
+    - capacity: 5153272
+      id:
+        block: 501
+        index: 15
+      push_amt: 1624918
+      target: tank-0072-ln
+    config: color=#bcf60c
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: NxECXYeMMpGOLuD3f6pjC1Rgf2RREhfs8QRZA01BduA=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: sagittarius-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=sagittarius-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 39dd17b645870dea485bbaa69dce987b
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10cfabf889cb3367a18be25a99c562c1101201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200d603f6329353457ae425ee407b6f6782d5cd31ed2f87317afd0322a9829e95a
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 18
+      push_amt: 0
+      target: sagittarius-recipient-ln
+    - capacity: 4958402
+      id:
+        block: 500
+        index: 61
+      push_amt: 1788854
+      target: virgo-spender-ln
+    - capacity: 2989436
+      id:
+        block: 500
+        index: 71
+      push_amt: 1042081
+      target: cancer-router-ln
+    - capacity: 5086374
+      id:
+        block: 500
+        index: 76
+      push_amt: 1641185
+      target: libra-router-ln
+    - capacity: 6399717
+      id:
+        block: 500
+        index: 108
+      push_amt: 2892237
+      target: tank-0062-ln
+    - capacity: 9663556
+      id:
+        block: 500
+        index: 161
+      push_amt: 2540765
+      target: sagittarius-vuln-ln
+    - capacity: 8135065
+      id:
+        block: 500
+        index: 196
+      push_amt: 3163531
+      target: tank-0059-ln
+    config: color=#bcf60c
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: DB1X/ctgNGEPw1rCWMwj5LSKbsBoxejoRjZzZFlCoII=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: sagittarius-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=sagittarius-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: df85da87de2ff46a8e8dcb1d9b68d159
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101d43175cc7b43d19df0ce898192062dc1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209eee5c775695728d08f3598f218d81015a6d9e1db9486b9cd6627106aaa86cb2
+    config: color=#bcf60c
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: RomQOZigw324MCbk3aa04w1BVslTocSjJSlMIM6yKqQ=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: sagittarius-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=sagittarius-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: aa6d20d5647a05e72f1aa0513c3b0736
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1016d71bf3f6fb367fe40fd9284403c9491201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062008ca19d7f1bb3912348dbb42e7bb87c84f9269d762f8b80fc40216026c0c0b76
+    channels:
+    - capacity: 6040193
+      id:
+        block: 500
+        index: 118
+      push_amt: 2677473
+      target: scorpio-vuln-ln
+    config: color=#bcf60c
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: aVMwVCl6TSAP0BfeEib1vW5TGhLc1X6AeodXBlYhccs=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: sagittarius-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=capricorn-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 0e235bc70996c38ac0f1d960806ab10c
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10352ba98a46a832aa3df119939e5a657b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620ed006b52d37e0c37a7cebc5d6bc59271b903ce48098106321ec77865a92897da
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 19
+      push_amt: 0
+      target: capricorn-router-ln
+    - capacity: 6199522
+      id:
+        block: 500
+        index: 26
+      push_amt: 3014995
+      target: cancer-router-ln
+    - capacity: 7087639
+      id:
+        block: 500
+        index: 111
+      push_amt: 1461451
+      target: libra-router-ln
+    - capacity: 9656605
+      id:
+        block: 500
+        index: 117
+      push_amt: 1612211
+      target: tank-0053-ln
+    - capacity: 3220387
+      id:
+        block: 500
+        index: 120
+      push_amt: 698290
+      target: tank-0084-ln
+    - capacity: 3692479
+      id:
+        block: 500
+        index: 147
+      push_amt: 1085432
+      target: aries-vuln-ln
+    - capacity: 3468679
+      id:
+        block: 500
+        index: 156
+      push_amt: 1159525
+      target: tank-0066-ln
+    - capacity: 9745513
+      id:
+        block: 500
+        index: 185
+      push_amt: 4850828
+      target: leo-spender-ln
+    - capacity: 2380463
+      id:
+        block: 501
+        index: 8
+      push_amt: 1005674
+      target: tank-0054-ln
+    config: color=#fabebe
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: vJtF3SAAVAOi3+Tb3uoa7Y2teEp4M8CAuP+c+E4QMwY=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: capricorn-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=capricorn-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 26d46249451eac8ccd4393337e35c515
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1077e8ed5bd2fc739f13d5cb7f814d18c01201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620fa3c45b075e10b295286bc81d371b12820f33fcb2e7d822e4c67dac38eaa366f
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 20
+      push_amt: 0
+      target: capricorn-recipient-ln
+    - capacity: 3774758
+      id:
+        block: 500
+        index: 149
+      push_amt: 1778141
+      target: aquarius-vuln-ln
+    config: color=#fabebe
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: O+2GdNAShJA4QEbdLakVq8F7pBlO+mY2wp0434bbqKQ=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: capricorn-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=capricorn-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 986d14674f398cb55c149555c7643ad1
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10a37b15c226c8e2040fbcb40805e479f51201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620eb251d821b514b888133de819ad7b184c75d3d4a297ec0d7563582c893d643f4
+    config: color=#fabebe
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: UC7n54vjXBgJGx+qawpijs6bQYZLWOrcGcgKshd/GgE=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: capricorn-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=capricorn-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: dcdc9b9d69fe92417892cc48b8e41137
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1062809eb29de920c1650f61bde0cb04651201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620838446a4bc7e6c5bb3f9036045fb7c4cbd74b1c9516097aebc2751fad5af484e
+    channels:
+    - capacity: 5555875
+      id:
+        block: 500
+        index: 138
+      push_amt: 1150681
+      target: taurus-router-ln
+    - capacity: 9702055
+      id:
+        block: 500
+        index: 172
+      push_amt: 2124969
+      target: scorpio-spender-ln
+    config: color=#fabebe
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: Uo6p2GNsNjMSDuajjWjV5Y1tR1yASiei1fhFbXhPFm0=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: capricorn-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aquarius-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: a834ebaf3a5f61efd6b5853f9721be56
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10aa05942828537edf6e5591efe95b573b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200e740d3c43663cb8695de3e9c58c888b7a6092f218975928e6538fc3ce1c5e0b
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 21
+      push_amt: 0
+      target: aquarius-router-ln
+    - capacity: 1053268
+      id:
+        block: 500
+        index: 96
+      push_amt: 210977
+      target: cancer-router-ln
+    - capacity: 5710434
+      id:
+        block: 501
+        index: 2
+      push_amt: 1822490
+      target: capricorn-router-ln
+    - capacity: 8222573
+      id:
+        block: 501
+        index: 4
+      push_amt: 3016183
+      target: leo-router-ln
+    - capacity: 7803730
+      id:
+        block: 501
+        index: 7
+      push_amt: 1722522
+      target: tank-0057-ln
+    - capacity: 8208680
+      id:
+        block: 501
+        index: 11
+      push_amt: 2456128
+      target: gemini-router-ln
+    - capacity: 9238025
+      id:
+        block: 501
+        index: 18
+      push_amt: 2687284
+      target: sagittarius-spender-ln
+    - capacity: 1422700
+      id:
+        block: 501
+        index: 23
+      push_amt: 270203
+      target: taurus-router-ln
+    config: color=#008080
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: nQK2xAGDCpRKEdfqR6HJaQiSZC7LRecZ8ppk0VtIWtM=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aquarius-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aquarius-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 46462eb077f780186315bef200399fa8
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1098a07bc2a4b93d66f4c58faa12da44a21201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200c6ef519b012c64d88da055d807b0733b7c8b905f79e9e608ed88b62b46455ba
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 22
+      push_amt: 0
+      target: aquarius-recipient-ln
+    - capacity: 6514715
+      id:
+        block: 500
+        index: 63
+      push_amt: 2352767
+      target: tank-0058-ln
+    config: color=#008080
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 3f/pRpMg8lbQuBfPFFre8Q3/VWMetAAXSJwLJKTcpjU=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aquarius-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aquarius-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 1f5c545e228dae27ebc7e47938df3edd
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10a2c3854835a7417cbf8ccdbf38047c0b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006202b26329e24956543b88e76bf14f5e15395fb905af54b7fef60cd878ab5e5bb72
+    config: color=#008080
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: qf5Q3VZ7X35ni+g++bIUp6Q1GHjFhJzUJPorS/jecK4=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: aquarius-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=aquarius-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: e2a3354c18a6271c8116b08ce943e784
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10153e2073a4b5b33fdfb9dcc5c2a246721201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006203b97da5ee8af01f35b6ef050f6dfe1e4738abbc9c37d808d80a06dcdbf6793af
+    channels:
+    - capacity: 9732413
+      id:
+        block: 500
+        index: 64
+      push_amt: 1936640
+      target: capricorn-spender-ln
+    - capacity: 3571703
+      id:
+        block: 500
+        index: 158
+      push_amt: 805836
+      target: libra-router-ln
+    config: color=#008080
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: P4ivP66HElgUGFS0/u68Zx3qZ2DLcEuK1294uo6a+pU=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: aquarius-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=pisces-spender
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: b7387324524f2bced05e82ed4ca0459c
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a108c2245de9a371923d0650f49f56dd3121201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062072fda2704e4573c1490e0a5d0be11cfadb39d92650ba7c18632be65c99318b76
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 23
+      push_amt: 0
+      target: pisces-router-ln
+    - capacity: 9215509
+      id:
+        block: 500
+        index: 119
+      push_amt: 4517087
+      target: aquarius-spender-ln
+    - capacity: 8529637
+      id:
+        block: 500
+        index: 127
+      push_amt: 4009381
+      target: aquarius-vuln-ln
+    - capacity: 8393867
+      id:
+        block: 501
+        index: 1
+      push_amt: 3132925
+      target: tank-0057-ln
+    config: color=#e6beff
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Lqj+2CHVlM8oD9a9G1LLebtk9dv1iOMvywiPccZH+D4=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: pisces-spender
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=pisces-router
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 6d44845485508408ac48e5ab83329d8d
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1059af114481ab428bf6ecf970bb6bd6c01201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209083ee22b97d2d8600bca2d37bfa8bd4588c5b61fbaa3db61b46365d78f7acaa
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 24
+      push_amt: 0
+      target: pisces-recipient-ln
+    config: color=#e6beff
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: H12JDMLEWq2JxIlmEH4kRJMwwqP7acwe1s276cNtWJ8=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: pisces-router
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=pisces-recipient
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: b68d6d758ed4732ec9f629110086b2df
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a100e73ee98f1e4ee9cd1936290051d29d91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620090f1f5609214728b67bb89dedd99dfd792d1080b15b6af6ae78a60f4cbab1bc
+    config: color=#e6beff
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: XKqSrLZnl9DAJ/PIsQkAD5wH9b2+Yo0puRlQiYvDGc0=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: pisces-recipient
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=pisces-vuln
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: a73c5d15b11f7560d4fe9005b9529fd6
+  image:
+    tag: '25.1'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a108e9af275197dd1243cd3e3192b852d0d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620ccac9ebd053c1472b2ed8e8735807b1d2260622f221bc71eb4991165058d707e
+    channels:
+    - capacity: 1683742
+      id:
+        block: 500
+        index: 36
+      push_amt: 216553
+      target: sagittarius-spender-ln
+    - capacity: 5430561
+      id:
+        block: 500
+        index: 125
+      push_amt: 2015611
+      target: gemini-router-ln
+    config: color=#e6beff
+    image:
+      tag: v0.18.2-beta
+    macaroonRootKey: Rh+BjgMnLKwT58wc+KQYOeXScQk7VO8GIeTOyhErUk4=
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    restartPolicy: Never
+  name: pisces-vuln
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0048
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 3693349b6e02a60b05c392f4fb7bb717
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101f1dbb3506227e95c3740992df2965d41201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620c7b995f61ef43193887558b2d65bcab80512922a0e437c08daece44398ca9b3b
+    channels:
+    - capacity: 2177568
+      id:
+        block: 500
+        index: 25
+      push_amt: 273400
+      target: tank-0071-ln
+    - capacity: 8689180
+      id:
+        block: 500
+        index: 152
+      push_amt: 1591298
+      target: tank-0066-ln
+    - capacity: 2032017
+      id:
+        block: 501
+        index: 3
+      push_amt: 854627
+      target: virgo-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: eg8O1g9fICp+YQUUxn6TVCab4oudGW0+UCAIVdvy3W0=
+  name: tank-0048
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0049
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: e0466327bc8ef464e54f3a9c6ed875e9
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b066844e32a57319a35ec09a395154a51201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b63434654a44d3af626536cb39c299ee8374d7f62e021058c26378193cf7222f
+    channels:
+    - capacity: 7425194
+      id:
+        block: 500
+        index: 79
+      push_amt: 2671365
+      target: cancer-router-ln
+    - capacity: 3681195
+      id:
+        block: 500
+        index: 190
+      push_amt: 1052881
+      target: leo-spender-ln
+    - capacity: 7775737
+      id:
+        block: 501
+        index: 12
+      push_amt: 2459661
+      target: tank-0055-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: ChAR95moiZG24zkTHl2IJJTvOP7nFUCUUf1biTC577I=
+  name: tank-0049
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0050
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 3016ab6c13409829ebe079bc8ffbf505
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10387eac2d483ff93344f9679a4659c7ca1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620d32c05dd0ea19b71508134b6462dabaa1e5405a0ac4d92bb9d06949670938c5e
+    channels:
+    - capacity: 9563596
+      id:
+        block: 500
+        index: 83
+      push_amt: 3458247
+      target: taurus-router-ln
+    - capacity: 4134037
+      id:
+        block: 500
+        index: 198
+      push_amt: 1296706
+      target: gemini-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: PFLFW2w4wvEAa3gDxc5UMfKNu317cVgxl47ytEsVRiA=
+  name: tank-0050
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0051
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: a806d1319c0a3e1c5f0f523bf7f87f8d
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1028b18141371ce92456e4bd67e66ed4e71201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b2244096018cde6f7c1319be994d077e3a77bd0d92c6bd259164bd85e5fbde95
+    channels:
+    - capacity: 4282530
+      id:
+        block: 500
+        index: 73
+      push_amt: 1635041
+      target: tank-0080-ln
+    - capacity: 9595048
+      id:
+        block: 500
+        index: 75
+      push_amt: 2543312
+      target: tank-0050-ln
+    - capacity: 3788726
+      id:
+        block: 500
+        index: 88
+      push_amt: 809794
+      target: libra-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 3kyqXc8QIC7RZyU8d+XWz52CrgxOMFKAXxUYvUQA+rs=
+  name: tank-0051
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0052
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: dd5a1720236da379a3bcbfae4dd69f84
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a104a8aaff4aea2b178202efdc46218b2451201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620425024a7a9599560dc83754eae29bab6b7b5e5ad54ebaa808cb950ac9c27fede
+    channels:
+    - capacity: 3875923
+      id:
+        block: 500
+        index: 29
+      push_amt: 1488700
+      target: tank-0072-ln
+    - capacity: 4938205
+      id:
+        block: 500
+        index: 32
+      push_amt: 1007724
+      target: pisces-spender-ln
+    - capacity: 8399012
+      id:
+        block: 500
+        index: 66
+      push_amt: 1716307
+      target: tank-0082-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: AEdY3OV2lS35lRtjn8wBMMEqcQk8XB3VTJsIeC1d7MM=
+  name: tank-0052
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0053
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 5da47a1ea19c1ea81e900b3a441c6016
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10f379ca2a0074ddc91afb8c2453f4fde11201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620c318a643608d4ec42a9af4fa052742f191a0263f04ca4d8c62bfd0b326c3811c
+    channels:
+    - capacity: 9349013
+      id:
+        block: 500
+        index: 31
+      push_amt: 3638129
+      target: sagittarius-spender-ln
+    - capacity: 4410074
+      id:
+        block: 500
+        index: 37
+      push_amt: 1077688
+      target: tank-0048-ln
+    - capacity: 4568097
+      id:
+        block: 500
+        index: 51
+      push_amt: 2016240
+      target: taurus-spender-ln
+    - capacity: 7089701
+      id:
+        block: 500
+        index: 124
+      push_amt: 1568236
+      target: pisces-spender-ln
+    - capacity: 4541090
+      id:
+        block: 500
+        index: 153
+      push_amt: 1173811
+      target: leo-spender-ln
+    - capacity: 2210606
+      id:
+        block: 500
+        index: 179
+      push_amt: 764052
+      target: tank-0049-ln
+    - capacity: 2103930
+      id:
+        block: 501
+        index: 20
+      push_amt: 495368
+      target: tank-0064-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: /caYWJhlPL3DonDSlRD69261ybLelzoFNc1d20JNGUI=
+  name: tank-0053
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0054
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: e69b9cdd4b426adb062a852a3684597a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10827d56a5e44d94cb78c298616449f18c1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620afc797b7b2328f63fbad773179dcf74d8f0c6fdf4a250233628db0fdae0fffef
+    channels:
+    - capacity: 5306098
+      id:
+        block: 500
+        index: 34
+      push_amt: 794054
+      target: tank-0081-ln
+    - capacity: 6522496
+      id:
+        block: 500
+        index: 112
+      push_amt: 2086772
+      target: tank-0079-ln
+    - capacity: 3731719
+      id:
+        block: 500
+        index: 136
+      push_amt: 1271352
+      target: taurus-vuln-ln
+    - capacity: 7791344
+      id:
+        block: 500
+        index: 160
+      push_amt: 3028266
+      target: tank-0060-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: /+W71S/44Y+3DYDvofCWAnsHhxn/05keDPamGt4ZXXk=
+  name: tank-0054
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0055
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c6bfccba344f783e3259426602c1ab9e
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10dc862ab295ba6baf3cbf392e7f37ad011201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006203447e74987dce52de473b6642eaa9834a91d9199820ce3a8e2d7c7067f745da4
+    channels:
+    - capacity: 1066103
+      id:
+        block: 500
+        index: 93
+      push_amt: 214093
+      target: cancer-vuln-ln
+    - capacity: 6694831
+      id:
+        block: 500
+        index: 183
+      push_amt: 2376504
+      target: tank-0081-ln
+    - capacity: 2818262
+      id:
+        block: 500
+        index: 197
+      push_amt: 447534
+      target: tank-0053-ln
+    - capacity: 4880597
+      id:
+        block: 501
+        index: 16
+      push_amt: 799893
+      target: leo-router-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: XCrmrprMgaQgDSHv7v5gkxCyW/NM5WjcovzzPh92CSY=
+  name: tank-0055
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0056
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: fcc804f669c7ae7947df6584b3e8ad1c
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b798c29405c44ab93ed736d466b7df691201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206776d0a8ef19c9055688073a49886f9ed834dfb3a03f3f7c252bd03d45e4336a
+    channels:
+    - capacity: 6727771
+      id:
+        block: 500
+        index: 84
+      push_amt: 1119375
+      target: scorpio-spender-ln
+    - capacity: 1799467
+      id:
+        block: 500
+        index: 130
+      push_amt: 538081
+      target: sagittarius-router-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 8zfCCT9OO3Jlgblx9VGM8SPKuqRLvj1n0dxOI7nVHhM=
+  name: tank-0056
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0057
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: a91434cf230953c51dd554c3f589f02a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1011d9fdc652d860cb284a378ac45a09341201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200218156c216659f08cc6ed72f67b00c714d743b99d6d009fcd2f3305c52b0994
+    channels:
+    - capacity: 3444310
+      id:
+        block: 500
+        index: 77
+      push_amt: 1195825
+      target: tank-0061-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: MK02visor2O6tyvZU1atVMOAcXmcda7krSl6iTkGJVA=
+  name: tank-0057
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0058
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 8b4764de4c309e37f00684d25b908f64
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10f4d003dd845fc2a73e71b9e21ffb0e181201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620de52c6bcae823ab5a58bf802e60bb87c80170e435c6fb7816e24255029986e94
+    channels:
+    - capacity: 5838564
+      id:
+        block: 500
+        index: 67
+      push_amt: 1327206
+      target: cancer-router-ln
+    - capacity: 3631000
+      id:
+        block: 500
+        index: 114
+      push_amt: 1633411
+      target: tank-0060-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: xVNrAnL+DwCHCkAZV0Wy0GfClwS4WLG6bP94FZy/yYI=
+  name: tank-0058
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0059
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: aa66f7c34f36c0734c4dad789bd41294
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10f0401f5c77e1045145a465a04d0a61051201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620cc8cd0f94525898a972e326cf857684c5311c5b688068f2b18da65961b5bd8e4
+    channels:
+    - capacity: 9368140
+      id:
+        block: 500
+        index: 74
+      push_amt: 3961625
+      target: tank-0065-ln
+    - capacity: 3881328
+      id:
+        block: 501
+        index: 22
+      push_amt: 1221788
+      target: tank-0062-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: d27pTB0huqqzIXju2YpC/jivw6UhL949ySmGslmStoE=
+  name: tank-0059
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0060
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 7fb96cfbee61970e1c9047f2752a22f4
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ceec471be11b459e381e6de43f1cb78e1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006204b4ff1b7a8fd7194086cd8fa3055fd9dc81bba831c441031e5e67ecddd9c0b26
+    channels:
+    - capacity: 6394224
+      id:
+        block: 500
+        index: 65
+      push_amt: 2380398
+      target: cancer-router-ln
+    - capacity: 7701725
+      id:
+        block: 500
+        index: 182
+      push_amt: 3359329
+      target: tank-0077-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: rne10vnoOH/42B44D9yrYedjT5uRv/rhmWYlkQdqs/E=
+  name: tank-0060
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0061
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 08234e2a28e2da43d29340676a504dfd
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1010c54699ea183d3d50509ca932d9530b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620fea99239f80851087a6d623ab683f11fe832f3047d3835e7cdc35d43d0c3b5ed
+    channels:
+    - capacity: 6571871
+      id:
+        block: 500
+        index: 39
+      push_amt: 3215657
+      target: tank-0067-ln
+    - capacity: 9469923
+      id:
+        block: 500
+        index: 46
+      push_amt: 2050329
+      target: aries-router-ln
+    - capacity: 6418477
+      id:
+        block: 500
+        index: 54
+      push_amt: 2716847
+      target: gemini-router-ln
+    - capacity: 5001256
+      id:
+        block: 500
+        index: 186
+      push_amt: 1056858
+      target: scorpio-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: KeFVpQ9HswtCCTQRYsUoKpzqo/UrwmZL2rUeWlJ6FOo=
+  name: tank-0061
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0062
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: de523abd262ed0f1e78fa62b895b7536
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10c6e818cdb41092f12ddef0830ffcfacf1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620d61734d0bb0cb9ce589396e3275fbbbbdf01bb65ccaca6e23e6821ce32fb6b3e
+    channels:
+    - capacity: 8927970
+      id:
+        block: 500
+        index: 109
+      push_amt: 2437415
+      target: libra-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Vc77YD6xZlLmbU2SKoAFNDFKCHYpEC+uqqMQBW86UYc=
+  name: tank-0062
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0063
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: cdca4e20ab49049c86349dc668732af1
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ae578870fd3354502eee5094bfe085331201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062088ccd6e5385e15889543ba42277dcbfc48fde112c41d9b07ab4271e545da0037
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: hXiU9837w9TWvy2W8CchoJLxqzb+ZNQ0pw9BcWeC1gU=
+  name: tank-0063
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0064
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 0833b1839ee8e88b929864629587205f
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ee98e458c554090306ad26acca49eb2d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062013b8907570d3a78749b11fd9ca640ad8b87a981b324fde9bf7c0e238ca8d3826
+    channels:
+    - capacity: 1910727
+      id:
+        block: 500
+        index: 78
+      push_amt: 719994
+      target: aquarius-vuln-ln
+    - capacity: 9858879
+      id:
+        block: 500
+        index: 170
+      push_amt: 3066118
+      target: aries-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: wqIZDrUHhrfOCTVye6mYZidzullQcQVzCONDDoCOs9A=
+  name: tank-0064
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0065
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 6d0ea9469230ab7ab547769d65518968
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101af79f313b643801886a5805489bdd051201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620a4f8c2ade77c3fb0c15dfd073ec02284ecae10bd63e0d63741998f84f81b0365
+    channels:
+    - capacity: 7935121
+      id:
+        block: 500
+        index: 92
+      push_amt: 1060314
+      target: tank-0063-ln
+    - capacity: 9542561
+      id:
+        block: 500
+        index: 132
+      push_amt: 4600080
+      target: tank-0052-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: nSRQz5L+4Oxc89zJF2Uu2cYctIAkrV9UrzeqixfS48s=
+  name: tank-0065
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0066
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: f399fac891f3ea2b89e3795e28334f64
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10a9ba7adee4362b995c72bd29b5dcf6921201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620cd6216ee11d75af9a9790c5466cbd47f0bc7e8c1e5cff62cdb19b0ccf170bec2
+    channels:
+    - capacity: 6234518
+      id:
+        block: 500
+        index: 44
+      push_amt: 2658543
+      target: tank-0063-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: hN5mWAhmAlmhMqUnoJZszILCzJnrFm8Fbm3ozJhRe0g=
+  name: tank-0066
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0067
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 0e65150e992227d7f4594b25381ab750
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10cc16badd5b218825e89aa7b697f2de051201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620905284dbdf0f9ce3a190ed05b2340dccbdabf4c1bb1daefd065b34eda5fddb96
+    channels:
+    - capacity: 6159358
+      id:
+        block: 500
+        index: 43
+      push_amt: 973094
+      target: sagittarius-vuln-ln
+    - capacity: 5771803
+      id:
+        block: 500
+        index: 184
+      push_amt: 759323
+      target: tank-0078-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: hnaqpTf1jQ6zFs450HoIka+mDkVH2s8eZDWo4cZFlC0=
+  name: tank-0067
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0068
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 5ebb6921f7794d18387627e151bdd464
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1055ae78659453009d937699b2f23f7d1b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062081175d85c64b15f46979485380cbbae5d9ed3782c8145f7c1f4b1926ad571947
+    channels:
+    - capacity: 4932714
+      id:
+        block: 500
+        index: 38
+      push_amt: 702398
+      target: tank-0076-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 3MXFbEzZ7GlTXDIBZ71jI+zc1uZov6fQlPxs2qk32i0=
+  name: tank-0068
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0069
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 66a4c9249b8cf92e1d06cea8ef6f77a5
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101a8a026fcbceb4116c0cb772ca6482ba1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620eb1d6b5d18da60a745e382daf7faef023a5d64e235e52f8f3d90b78e815ef0a9
+    channels:
+    - capacity: 4151744
+      id:
+        block: 500
+        index: 41
+      push_amt: 1534237
+      target: tank-0054-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: ToL50HgHUzmOWbqJYf3JdUVKBZlMfXPNmOhTSDZ2gLw=
+  name: tank-0069
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0070
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: b48220d918340db177927f1261ec9496
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10f296c521f9a0d4a956f08dadde7ae83b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006200c5bdcc8184667d87c8355748668daa81a8f538edfcec351abb49063d0319ac8
+    channels:
+    - capacity: 1269250
+      id:
+        block: 500
+        index: 116
+      push_amt: 449514
+      target: taurus-router-ln
+    - capacity: 6866349
+      id:
+        block: 500
+        index: 157
+      push_amt: 1758476
+      target: capricorn-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: QcJO1/WL4NIDyGt1ht6/dcNcPNyccwjTO7hyQS9JgZo=
+  name: tank-0070
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0071
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 7b61dd9b17ca3bbe3c1d79634659e57a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a106067cf9ed450163e5919f7574e58d00b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620a2cbaa76bfa30d05c52892f7f6944ffa79b1b276a1b08d05f6c16b1d6c8cfa55
+    channels:
+    - capacity: 7206702
+      id:
+        block: 500
+        index: 68
+      push_amt: 1087553
+      target: leo-router-ln
+    - capacity: 5177664
+      id:
+        block: 500
+        index: 110
+      push_amt: 1478084
+      target: tank-0051-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: qZKjQlQYdtHRb8KCpu6lT2PtaWKQRNODzDU/gpI21lw=
+  name: tank-0071
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0072
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: f6c8b43ceb00adf3a329d51e63b038d7
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10371926eedf415c33a7fad937ce2185211201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062095e0ccef8226783404cea0a67fb8af2c7a7d79b5870db92d50cb36af29e272e0
+    channels:
+    - capacity: 2954207
+      id:
+        block: 500
+        index: 177
+      push_amt: 554468
+      target: aquarius-vuln-ln
+    - capacity: 3964037
+      id:
+        block: 500
+        index: 192
+      push_amt: 770667
+      target: scorpio-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: yg4Io46YgnENhz5fzvN+X6nBYXMN+vaNl2P7npSXnWY=
+  name: tank-0072
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0073
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 6e93d2702443179f62c6d86f3aa0dd96
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10012c605952f896b97e7cb2ea6f16634b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062095b7741270c6c2cb2d7c153fb9d58a1a82e3d49c7f1769dd846ecb1e12b482fe
+    channels:
+    - capacity: 4056054
+      id:
+        block: 500
+        index: 178
+      push_amt: 1899188
+      target: tank-0054-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 0uStjY0k5WcMgjioXUrmXvcpovgtZmUNVmxUI9SuT00=
+  name: tank-0073
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0074
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: d04b978dd87a184d1d0ec6943afcb217
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1020940b5c65ae358f3600fde0893161e11201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620cc8b86b48c8529e586ae0a8f036f4f04e99431ebfa29e8ab4a9390832484aa13
+    channels:
+    - capacity: 9931185
+      id:
+        block: 500
+        index: 102
+      push_amt: 3824301
+      target: tank-0079-ln
+    - capacity: 5387586
+      id:
+        block: 501
+        index: 21
+      push_amt: 996481
+      target: tank-0067-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: gsvhSGd4mxDSmMrwpwlcqvM/AMz9/yHy78D6tP/ZsNo=
+  name: tank-0074
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0075
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 5562825351037f413c33fcb3e51fb70e
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10b0c09b18f782933213b224a804bad4b61201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620e347810be7087c91e8258b70564380ad17d50ccd179f57786a737ee854d9126b
+    channels:
+    - capacity: 8223224
+      id:
+        block: 500
+        index: 115
+      push_amt: 1882017
+      target: capricorn-spender-ln
+    - capacity: 8975380
+      id:
+        block: 500
+        index: 169
+      push_amt: 1300979
+      target: tank-0072-ln
+    - capacity: 8222021
+      id:
+        block: 501
+        index: 5
+      push_amt: 2060762
+      target: tank-0069-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: oxAbIWMaAZBOezuhwzvig7BnbE3I/XpDwaZZlS9x10Q=
+  name: tank-0075
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0076
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 23d7788b487dbcf35cdf77f641e64d8d
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101bbedc85c8bf3e85595b18cbe1c898c21201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006203f07d2e42daf784a0f75eb0c6c48f5c0284b157b44f4ee59e7e096f105e98040
+    channels:
+    - capacity: 2266903
+      id:
+        block: 500
+        index: 48
+      push_amt: 740106
+      target: tank-0065-ln
+    - capacity: 1141694
+      id:
+        block: 500
+        index: 103
+      push_amt: 456114
+      target: tank-0055-ln
+    - capacity: 9800659
+      id:
+        block: 500
+        index: 105
+      push_amt: 4726429
+      target: tank-0074-ln
+    - capacity: 4917065
+      id:
+        block: 500
+        index: 139
+      push_amt: 2187880
+      target: tank-0087-ln
+    - capacity: 5976772
+      id:
+        block: 501
+        index: 24
+      push_amt: 1233012
+      target: virgo-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: JNhsHmxwfTbrQ1GU06Ci2FqrMKbButmP5sPTAa+KDuo=
+  name: tank-0076
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0077
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 346ca387987b4d95f24e789c8bf635af
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10a966d0b306cc9914ffc656ed6271809a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620be2b255d5340f56194492d2fa727ac94ce921a1d5f4a6dec9f67cceea1ecab2e
+    channels:
+    - capacity: 7522803
+      id:
+        block: 500
+        index: 42
+      push_amt: 1722182
+      target: tank-0053-ln
+    - capacity: 5070878
+      id:
+        block: 500
+        index: 85
+      push_amt: 1042368
+      target: tank-0057-ln
+    - capacity: 8505899
+      id:
+        block: 500
+        index: 150
+      push_amt: 2141847
+      target: tank-0073-ln
+    - capacity: 6894698
+      id:
+        block: 500
+        index: 166
+      push_amt: 2101306
+      target: tank-0061-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 7cMJpdt3o3/vuMOalGWdaibjjkEjSFkFc52knrgMNas=
+  name: tank-0077
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0078
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c68831093bf950259210098d24241523
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10e972892003c65d6fc75b31b25c7a41d81201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006208d65fe07361ddc230a88aab16ea92b2d539ceee3646f64b2b5cff1583463325c
+    channels:
+    - capacity: 7695618
+      id:
+        block: 500
+        index: 187
+      push_amt: 2616775
+      target: scorpio-vuln-ln
+    - capacity: 6071699
+      id:
+        block: 500
+        index: 195
+      push_amt: 1099985
+      target: capricorn-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: TArzec2pzWCK6OWeb+XN1eFE6sQqf8tyucBFT7NgUzQ=
+  name: tank-0078
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0079
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 85821b8e0c64a40c963083c0dd2c7287
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1030e24e5956dad2fac61bd87a875977bd1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620749a879fdc16b521f793728803ff70ae9ca4bbf11ee4c732452bcd8dd13b6a19
+    channels:
+    - capacity: 7604953
+      id:
+        block: 500
+        index: 55
+      push_amt: 1198717
+      target: tank-0066-ln
+    - capacity: 1117218
+      id:
+        block: 500
+        index: 121
+      push_amt: 232634
+      target: scorpio-spender-ln
+    - capacity: 9714545
+      id:
+        block: 500
+        index: 193
+      push_amt: 4136836
+      target: tank-0060-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: zotnvQVATXKZN2hYPB2YUtv3EudvrXLGDnADEVgh2a8=
+  name: tank-0079
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0080
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 93a57e3dc21ed14e4e64ac1e6c27deb1
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a1064694486b81e994c6a1c50abd533f90d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006204ffb143f0ec664350a1baa67a961468dd33c3ea96375feb9f19f787ac015d9ad
+    channels:
+    - capacity: 2399328
+      id:
+        block: 500
+        index: 104
+      push_amt: 447898
+      target: tank-0081-ln
+    - capacity: 1817433
+      id:
+        block: 500
+        index: 162
+      push_amt: 581141
+      target: pisces-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: wsfazDz+9caHgxJfPCMq9rwgwmXvyGtdnDRDJRi+vOI=
+  name: tank-0080
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0081
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 49a3766c2016143f17762f814b8be79f
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10e2fb0f311fd93536a70bc7414a5cec9a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620e5122720c286053b0f9a9611e74da6a9e556c63af604086497d18fc57515b545
+    channels:
+    - capacity: 6213989
+      id:
+        block: 500
+        index: 35
+      push_amt: 1462344
+      target: libra-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: dR//z6oPtzHTwY+O/39IoeRP72TmVMs/fMOQ1HUSwgA=
+  name: tank-0081
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0082
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 2a2de404ed99997b8351f3e32f7319fa
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101ebd155d75bc22559badd03ec7f0c57d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620247f1ba403c11521807a76666d3d27d5edc341a29ca82b82b7c00c2a7bdaa85e
+    channels:
+    - capacity: 7467850
+      id:
+        block: 500
+        index: 40
+      push_amt: 1738245
+      target: leo-router-ln
+    - capacity: 1530027
+      id:
+        block: 500
+        index: 52
+      push_amt: 441555
+      target: aquarius-spender-ln
+    - capacity: 1940953
+      id:
+        block: 500
+        index: 107
+      push_amt: 668533
+      target: libra-router-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: a23G6XujWnJc8fVgpf3L3Lh+Tt499pkSRrJFUEzcmcU=
+  name: tank-0082
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0083
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 8d5764dd27828adaaaf91eb9cb090466
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10fad330eff2f5c14a596cfa01c7436ca01201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620e95419e10a5d5daae4305638ba8a1b9eb0d65abde5207b6ee67aff4ab3d0f050
+    channels:
+    - capacity: 2634662
+      id:
+        block: 500
+        index: 145
+      push_amt: 1178765
+      target: tank-0062-ln
+    - capacity: 6654398
+      id:
+        block: 500
+        index: 155
+      push_amt: 1958688
+      target: taurus-spender-ln
+    - capacity: 5124769
+      id:
+        block: 500
+        index: 191
+      push_amt: 771779
+      target: cancer-vuln-ln
+    - capacity: 8490923
+      id:
+        block: 500
+        index: 199
+      push_amt: 2480948
+      target: tank-0087-ln
+    - capacity: 9205756
+      id:
+        block: 501
+        index: 14
+      push_amt: 2563751
+      target: virgo-router-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: SIDTRXZKVoM2UbuIz4M6Zd2MI+vBMPqsEG85RXfGCkY=
+  name: tank-0083
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0084
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: c864013f454b0fa9f897c93a0fa51e95
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10eb0f767ade5bd69d299180e872bf6bf81201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062021c53251b4c48b063a95e1c1945e83cbd1c9a2aa7b2d5430c4423478694ea5d1
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: YoIxegdUGQkBzrPVsKNv8cg411GnwTR/Spdpulb6cQk=
+  name: tank-0084
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0085
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 81c528aed796c0d1e705e36d562bea9c
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ea0c296c83b7a151fccc530553d3a07b1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620caeb2e011a6bd130b45e97bdabd580e3e04b65d73435f2fc67075930dede54cb
+    channels:
+    - capacity: 4683869
+      id:
+        block: 500
+        index: 123
+      push_amt: 1624702
+      target: tank-0063-ln
+    - capacity: 2092877
+      id:
+        block: 500
+        index: 175
+      push_amt: 1011999
+      target: tank-0075-ln
+    - capacity: 6071201
+      id:
+        block: 501
+        index: 10
+      push_amt: 1803906
+      target: leo-router-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: Srx3IiQStNwDztDhuCqtbad9cx2FjRps2kV39KHNxZ8=
+  name: tank-0085
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0086
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: 050d31bbf45951b56f15078a60b6a03d
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a102ed1225a5fddbe097ced609883e5db131201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006203742be913eed3958c6b76b8c4d2ee18de11f9dc54f3197201a30e327846ddb3d
+    channels:
+    - capacity: 6701187
+      id:
+        block: 500
+        index: 90
+      push_amt: 2014546
+      target: gemini-spender-ln
+    - capacity: 7239838
+      id:
+        block: 500
+        index: 113
+      push_amt: 2511916
+      target: aries-vuln-ln
+    - capacity: 5292294
+      id:
+        block: 500
+        index: 164
+      push_amt: 1679188
+      target: tank-0083-ln
+    - capacity: 9925122
+      id:
+        block: 500
+        index: 167
+      push_amt: 2425131
+      target: tank-0052-ln
+    - capacity: 2868017
+      id:
+        block: 500
+        index: 189
+      push_amt: 558172
+      target: tank-0048-ln
+    - capacity: 8567529
+      id:
+        block: 501
+        index: 17
+      push_amt: 2822767
+      target: scorpio-spender-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: yI3FA101N+Uziz+TwjGSPGLOxZdHSw1li4cPhY+37v8=
+  name: tank-0086
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=tank-0087
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: fee87d1626ac3842e57fe544db63aac1
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101951e15775e352d1b508f55c9485a5551201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620afaa763939d5b9c76b8db45e640b7cd90581fbf4b4548450943948b9a020f22a
+    channels:
+    - capacity: 7672084
+      id:
+        block: 500
+        index: 91
+      push_amt: 3061727
+      target: tank-0078-ln
+    - capacity: 1425560
+      id:
+        block: 500
+        index: 95
+      push_amt: 280415
+      target: tank-0086-ln
+    - capacity: 3237205
+      id:
+        block: 501
+        index: 9
+      push_amt: 1067692
+      target: tank-0067-ln
+    - capacity: 4583980
+      id:
+        block: 501
+        index: 13
+      push_amt: 994196
+      target: capricorn-vuln-ln
+    config: color=#3399FF
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 97fjZ4icfog0Gi3VasKRXRp0GI9Dm6TY9rZSy2z4dv0=
+  name: tank-0087
+- addnode: []
+  config: 'maxconnections=1000
+
+    uacomment=miner
+
+    signetchallenge=0014b8c32b827e7574aa2451759135749b614d987e55
+
+    coinstatsindex=1'
+  global:
+    chain: signet
+    rpcpassword: fa6b0031b7c3533aaf09dab7239de52a
+  image:
+    tag: 29.0-util
+  ln:
+    lnd: true
+  lnd:
+    extraContainers:
+    - env:
+      - name: LN_VISUALIZER_API_URL
+        value: http://127.0.0.1:5647
+      image: bitcoindevproject/lnvisualizer:latest
+      name: lnvisweb
+      ports:
+      - containerPort: 80
+        name: web
+        protocol: TCP
+    - env:
+      - name: LND_CERT_FILE
+        value: /tls.cert
+      - name: LND_MACAROON_FILE
+        value: /root/.lnd/data/chain/bitcoin/signet/admin.macaroon
+      - name: LND_SOCKET
+        value: localhost:10009
+      - name: LNVIS_RESYNCTIMER
+        value: '* * * * *'
+      image: maxkotlan/ln-visualizer-api:v0.0.28
+      name: lnvisapi
+      ports:
+      - containerPort: 5647
+        name: api
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /root/.lnd/
+        name: shared-volume
+      - mountPath: /tls.cert
+        name: config
+        subPath: tls.cert
+  name: miner
+  startupProbe:
+    exec:
+      command:
+      - /bin/sh
+      - -c
+      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cVSEZkuh7RANY9f1AgCtAZSjYMfJyFwjPSML3vwzvX37aqyiK89b\)#5vx69jst\"\,\"timestamp\":0}]
+    failureThreshold: 10
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 60
+plugins:
+  preDeploy:
+    lnvisualizer:
+      entrypoint: ../../plugins/lnvisualizer
+      instance: miner
+      name: lnd-ln
+services:
+- host: lnvisualizer.default
+  path: /lnvisualizer/
+  port: 80
+  title: LN Visualizer Web UI
