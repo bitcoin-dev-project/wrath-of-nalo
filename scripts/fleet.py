@@ -103,7 +103,6 @@ class Node:
             "lnd": {
                 "image": self.lnd_image,
                 **({"channels": self.channels} if self.channels else {}),
-                "config": f"alias={self.name}",
                 "macaroonRootKey": self.root_key_base64,
                 "adminMacaroon": self.admin_macaroon,
                 # "metricsExport": True,
