@@ -9,6 +9,7 @@ from time import sleep
 # Providing for as many as 40 armada nodes, is 200 each
 # Leave a huge margin
 FUNDS_PER_TANK = 100
+FUNDING_TXS_COUNT = 10
 
 class ArmArmada(Commander):
     def set_test_params(self):
@@ -31,7 +32,7 @@ class ArmArmada(Commander):
                 try:
                     address = ln.newaddress()
                     self.log.info(f"Got wallet address {address} from {ln.name}")
-                    outputs[address] = FUNDS_PER_TANK
+                    outputs[address] = FUNDS_PER_TANK / FUNDING_TXS_COUNT
                     break
                 except Exception as e:
                     self.log.info(
@@ -50,7 +51,11 @@ class ArmArmada(Commander):
 
         self.log.info("Funding Armada LN wallets...")
 
-        self.tanks["miner"].sendmany(amounts=outputs)
+        for i in range(FUNDING_TXS_COUNT):
+            self.log.info(f"Sending funding tx {i} of {FUNDING_TXS_COUNT}")
+            res = self.tanks["miner"].sendmany(amounts=outputs)
+            self.log.info(res)
+
         self.generatetoaddress(self.tanks["miner"], 1, self.tanks["miner"].getnewaddress())
 
 

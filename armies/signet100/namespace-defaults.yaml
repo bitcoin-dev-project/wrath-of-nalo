@@ -3,3 +3,5 @@ users:
   roles:
   - pod-viewer
   - pod-manager
+  - ingress-viewer
+  - ingress-controller-viewer

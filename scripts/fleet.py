@@ -368,7 +368,9 @@ class Game:
                     "name": "warnet-user",
                     "roles": [
                         "pod-viewer",
-                        "pod-manager"
+                        "pod-manager",
+                        "ingress-viewer",
+                        "ingress-controller-viewer"
                     ]
                 }
             ]
@@ -403,6 +405,13 @@ g.write_armies(len(TEAMS))
 g = Game("regtest4", "regtest")
 g.add_nodes(4)
 g.add_random_channels(6)
+g.add_miner()
+g.write()
+g.write_armies(1)
+
+
+g = Game("regtest-2nodes-0channels", "regtest")
+g.add_nodes(2)
 g.add_miner()
 g.write()
 g.write_armies(1)

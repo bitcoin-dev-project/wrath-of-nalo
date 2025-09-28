@@ -34,6 +34,13 @@
 ```
 
 ```
+(.venv) $ warnet ln rpc armada-1-ln openchannel 0328ed8ed73d267c117fa7406eb093458fce613a06aec9dc18df1a313d12895e5a --connect tank-0000-ln.default --local_amt=10000000
+{
+    "funding_txid": "1840a6d8a003f89abf1a633fee32bae8b96cf1707df174f852a4ee98f2f36718"
+}
+```
+
+```
 (.venv) $ warnet ln rpc armada-1-ln pendingchannels
 {
     "total_limbo_balance":  "0",
