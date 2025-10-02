@@ -8,7 +8,7 @@ from time import sleep
 # Opening as much as 500 channels, 10 BTC each, leaves 8000
 # Providing for as many as 40 armada nodes, is 200 each
 # Leave a huge margin
-FUNDS_PER_TANK = 100
+FUNDS_PER_TANK = 10
 FUNDING_TXS_COUNT = 10
 
 class ArmArmada(Commander):

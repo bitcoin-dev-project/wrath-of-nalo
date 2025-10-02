@@ -104,43 +104,64 @@ class Node:
                 "image": self.lnd_image,
                 **({"channels": self.channels} if self.channels else {}),
                 "macaroonRootKey": self.root_key_base64,
-                "adminMacaroon": self.admin_macaroon,
-                # "metricsExport": True,
-                # "prometheusMetricsPort": 9332,
-                # "extraContainers": [
-                #     {
-                #         "name": "lnd-exporter",
-                #         "image": "bitdonkey/lnd-exporter:0.1.3",
-                #         "imagePullPolicy": "IfNotPresent",
-                #         "volumeMounts": [
-                #             {
-                #                 "name": "config",
-                #                 "mountPath": "/macaroon.hex",
-                #                 "subPath": "MACAROON_HEX"
-                #             }
-                #         ],
-                #         "env": [
-                #             {
-                #                 "name": "METRICS",
-                #                 "value":
-                #                     'lnd_balance_channels=parse("/v1/balance/channels","balance") ' +
-                #                     'lnd_local_balance_channels=parse("/v1/balance/channels","local_balance.sat") ' +
-                #                     'lnd_remote_balance_channels=parse("/v1/balance/channels","remote_balance.sat") ' +
-                #                     'lnd_block_height=parse("/v1/getinfo","block_height") ' +
-                #                     'lnd_peers=parse("/v1/getinfo","num_peers")'
-                #             }
-                #         ],
-                #         "ports": [
-                #             {
-                #                 "name": "prom-metrics",
-                #                 "containerPort": 9332,
-                #                 "protocol": "TCP",
-                #             }
-                #         ]
-                #     }
-                # ]
+                "adminMacaroon": self.admin_macaroon
             }
         }
+
+class MetricsNode(Node):
+    def to_obj(self):
+        obj = super().to_obj()
+        obj["lnd"].update({
+            "metricsExport": True,
+            "prometheusMetricsPort": 9332,
+            "extraContainers": [
+                {
+                    "name": "lnd-exporter",
+                    "image": "bitcoindevproject/lnd-exporter:0.2.0",
+                    "imagePullPolicy": "IfNotPresent",
+                    "volumeMounts": [
+                        {
+                            "name": "config",
+                            "mountPath": "/macaroon.hex",
+                            "subPath": "MACAROON_HEX"
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "METRICS",
+                            "value":
+                                'lnd_block_height=parse("/v1/getinfo","block_height") '
+                        }
+                    ],
+                    "ports": [
+                        {
+                            "name": "prom-metrics",
+                            "containerPort": 9332,
+                            "protocol": "TCP",
+                        }
+                    ]
+                }
+            ]
+        })
+        return obj
+
+class SpenderNode(MetricsNode):
+    def to_obj(self):
+        obj = super().to_obj()
+        obj["lnd"]["extraContainers"][0]["env"][0]["value"] += 'failed_payments=FAILED_PAYMENTS '
+        return obj
+
+class RoutingNode(MetricsNode):
+    def to_obj(self):
+        obj = super().to_obj()
+        obj["lnd"]["extraContainers"][0]["env"][0]["value"] += 'pending_htlcs=PENDING_HTLCS '
+        return obj
+
+class RecipientNode(MetricsNode):
+    def to_obj(self):
+        obj = super().to_obj()
+        obj["lnd"]["extraContainers"][0]["env"][0]["value"] += 'lnd_balance_channels=parse("/v1/balance/channels","balance") '
+        return obj
 
 class Miner(Node):
     def __init__(self, game):
@@ -324,6 +345,19 @@ class Game:
         # do this last, don't connect to self
         self.nodes.append(miner)
 
+    def add_payment_routes(self, n):
+        for i in range(n):
+            team = TEAMS[i]
+            # Create 3-node chain of channels: spender->router->recipient
+            spender = SpenderNode(self, f"spender-{team}")
+            router = RoutingNode(self, f"router-{team}")
+            recipient = RecipientNode(self, f"recipient-{team}")
+            self.nodes.append(spender)
+            self.nodes.append(router)
+            self.nodes.append(recipient)
+            self.add_channel(spender, router, int(2e8), {"push_amt": 0})
+            self.add_channel(router, recipient, int(2e8), {"push_amt": 0})
+
     def write(self):
         network = {
             "nodes": [n.to_obj() for n in self.nodes],
@@ -375,7 +409,6 @@ class Game:
                 }
             ]
         }
-
         self.write_yaml_dir("armies", data, default, "namespaces.yaml", "namespace-defaults.yaml")
 
     def write_network_yaml_dir(self, subdir, data):
@@ -396,22 +429,17 @@ class Game:
 
 
 g = Game("signet100", "signet")
-g.add_nodes(100)
-g.add_random_channels(500)
+# g.add_nodes(100)
+# g.add_random_channels(500)
+g.add_payment_routes(len(TEAMS))
 g.add_miner()
 g.write()
 g.write_armies(len(TEAMS))
 
 g = Game("regtest4", "regtest")
-g.add_nodes(4)
-g.add_random_channels(6)
-g.add_miner()
-g.write()
-g.write_armies(1)
-
-
-g = Game("regtest-2nodes-0channels", "regtest")
-g.add_nodes(2)
+# g.add_nodes(4)
+# g.add_random_channels(6)
+g.add_payment_routes(1)
 g.add_miner()
 g.write()
 g.write_armies(1)
