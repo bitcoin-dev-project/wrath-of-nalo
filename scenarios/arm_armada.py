@@ -22,9 +22,15 @@ class ArmArmada(Commander):
         parser.usage = "warnet run /path/to/arm_armada.py"
 
     def run_test(self):
-        self.log.info("Getting Armada LN wallet addresses...")
-        tanks = [ln for ln in self.lns.values() if "armada" in ln.name]
+        self.log.info("Gathering armada LN nodes across all namespaces")
+        tanks = []
+        for ln in self.ln_nodes:
+            if "armada" in ln.name:
+                tanks.append(ln)
         self.log.info(f"Armada tanks:\n{[f'{ln.name}.{ln.namespace}' for ln in tanks]}")
+        self.log.info("Getting Armada LN wallet addresses...")
+        self.log.info([ln.name for ln in self.lns.values()])
+        self.log.info(ln.name for ln in tanks)
         outputs = {}
 
         def get_ln_addr(self, ln):

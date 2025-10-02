@@ -10,13 +10,13 @@ nodes:
     coinstatsindex=1'
   global:
     chain: regtest
-    rpcpassword: 57d4122d21e9ba1259847009a512ce7c
+    rpcpassword: 89f824b3176ee2c3f34a1f7de9227e91
   image:
     tag: '29.0'
   ln:
     lnd: true
   lnd:
-    adminMacaroon: 0201036c6e6402f801030a1036c817e5f23fb43c83a2651657c3ab2e1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620c85ef0b7599001f62f4344a4272c752382d1a4859bd21e5b877f39d0ac116f33
+    adminMacaroon: 0201036c6e6402f801030a10a9fe468eb8fdec2ae23333e522c0875a1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062073badf02c28588c912e41105c2ecb008ddc8c335c4e406e5c0ebd7c194a42912
     channels:
     - capacity: 200000000
       id:
@@ -28,7 +28,7 @@ nodes:
     - env:
       - name: METRICS
         value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
-      image: bitcoindevproject/lnd-exporter-htlcs:0.2.0
+      image: bitcoindevproject/lnd-exporter:0.2.0
       imagePullPolicy: IfNotPresent
       name: lnd-exporter
       ports:
@@ -41,7 +41,7 @@ nodes:
         subPath: MACAROON_HEX
     image:
       tag: v0.19.0-beta
-    macaroonRootKey: ahcD98ZZE2wiuTelCGWUuYmY7JpVJhNRgh5VPCV0ckw=
+    macaroonRootKey: wG8ANSPJe1W7qdZLVl0mKZQaFyL6I/JP6VNLXYxoETs=
     metricsExport: true
     prometheusMetricsPort: 9332
   name: spender-aries
@@ -54,13 +54,13 @@ nodes:
     coinstatsindex=1'
   global:
     chain: regtest
-    rpcpassword: 56d921cef96e844aefdc935713fdce3c
+    rpcpassword: dd3f04d64a52f8d11317356604f2ce28
   image:
     tag: '29.0'
   ln:
     lnd: true
   lnd:
-    adminMacaroon: 0201036c6e6402f801030a10bfd8851efdeed979517bce723f0172161201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620769665b2906c928695bc3265824258f6a61b865e5c261fbfadee2f22081cf89e
+    adminMacaroon: 0201036c6e6402f801030a10bdcaeea000457ea8a520755a6f9e2dd91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e65726174651204726561640000062019aba96778184c2d009a9af24b67bea094aa537ed25ed435d199857d23b16fdd
     channels:
     - capacity: 200000000
       id:
@@ -72,7 +72,7 @@ nodes:
     - env:
       - name: METRICS
         value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
-      image: bitcoindevproject/lnd-exporter-htlcs:0.2.0
+      image: bitcoindevproject/lnd-exporter:0.2.0
       imagePullPolicy: IfNotPresent
       name: lnd-exporter
       ports:
@@ -85,7 +85,7 @@ nodes:
         subPath: MACAROON_HEX
     image:
       tag: v0.19.0-beta
-    macaroonRootKey: fxtO3g9WHUWqMtB3rdQid7EioXEAdkmEFloJRIGYfCI=
+    macaroonRootKey: 6XrmQpswwFZ7cEX0idQ0G3FB+F1vAwY9cQunepnlTSg=
     metricsExport: true
     prometheusMetricsPort: 9332
   name: router-aries
@@ -98,18 +98,18 @@ nodes:
     coinstatsindex=1'
   global:
     chain: regtest
-    rpcpassword: 32ce2efb4031de55bedb1d1cc8b48382
+    rpcpassword: ea6b822c6eae80ec9c4b6ccfd13cc064
   image:
     tag: '29.0'
   ln:
     lnd: true
   lnd:
-    adminMacaroon: 0201036c6e6402f801030a10212f8aefb828da605353b7f572fe5cde1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006207385357971ec29e2dca80c81c589f0ea1897bd69aa582af50b91ccdb61294d7f
+    adminMacaroon: 0201036c6e6402f801030a10231a904f6d392202dd8cd30b177c27d91201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b5b3bdb45f5a8fbfc7f538bf1ab1e1b257ce51792a2e3a6912d9da1c14be9cbe
     extraContainers:
     - env:
       - name: METRICS
         value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
-      image: bitcoindevproject/lnd-exporter-htlcs:0.2.0
+      image: bitcoindevproject/lnd-exporter:0.2.0
       imagePullPolicy: IfNotPresent
       name: lnd-exporter
       ports:
@@ -122,10 +122,135 @@ nodes:
         subPath: MACAROON_HEX
     image:
       tag: v0.19.0-beta
-    macaroonRootKey: jIDtsJCRdeyo7RyRykaDk9bQOSNK9P89IOH0cjvugeE=
+    macaroonRootKey: brImufUCq7We8PweOjxiIV2QRWrxK/fpmdLUrTK2k4E=
     metricsExport: true
     prometheusMetricsPort: 9332
   name: recipient-aries
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=spender-taurus
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: c5ece912af7344a221c4f11a30b5eb2a
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10ef269129fe3c82fd6c1846c6b109d8e21201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620477cc772d793debc3538f5748d1e97f1e129d48b2606602bb5ec23f8707f896e
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 3
+      push_amt: 0
+      target: router-taurus-ln
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") failed_payments=FAILED_PAYMENTS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: D6sq2bnKoBEMBXE9cmPtyFxmmxmEcxhsiikANrYvDNQ=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: spender-taurus
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=router-taurus
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: fe7f76f61937f362abba75a05e417719
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a10cbf240474d8c478190cf38062889cb091201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006209ffe6644ce6c82210d766de82ee18d58abebb5c0303b89a320944a18ef62ab80
+    channels:
+    - capacity: 200000000
+      id:
+        block: 500
+        index: 4
+      push_amt: 0
+      target: recipient-taurus-ln
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") pending_htlcs=PENDING_HTLCS '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: 2E3T0PDp8m4+bZq2tM+uAsMJtrSCLJbjy4etPyhH+Eo=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: router-taurus
+- addnode:
+  - miner
+  config: 'maxconnections=1000
+
+    uacomment=recipient-taurus
+
+    coinstatsindex=1'
+  global:
+    chain: regtest
+    rpcpassword: 98a65feee053c358ed9d99699f188eb5
+  image:
+    tag: '29.0'
+  ln:
+    lnd: true
+  lnd:
+    adminMacaroon: 0201036c6e6402f801030a101f3bd25911e374b3d7db0460e73c4d441201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620b6351c45c103469561fe5cc5d23d72b42feaf58789bf44f6e36edd34cb150e6b
+    extraContainers:
+    - env:
+      - name: METRICS
+        value: 'lnd_block_height=parse("/v1/getinfo","block_height") lnd_balance_channels=parse("/v1/balance/channels","balance") '
+      image: bitcoindevproject/lnd-exporter:0.2.0
+      imagePullPolicy: IfNotPresent
+      name: lnd-exporter
+      ports:
+      - containerPort: 9332
+        name: prom-metrics
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /macaroon.hex
+        name: config
+        subPath: MACAROON_HEX
+    image:
+      tag: v0.19.0-beta
+    macaroonRootKey: govXfOHWV6UxK+SMHPoAdF1O6WmvX2bKEocvR4wSblk=
+    metricsExport: true
+    prometheusMetricsPort: 9332
+  name: recipient-taurus
 - addnode: []
   config: 'maxconnections=1000
 
@@ -134,7 +259,7 @@ nodes:
     coinstatsindex=1'
   global:
     chain: regtest
-    rpcpassword: c156d3fc57196766d55fb687437c9e1f
+    rpcpassword: a9923cd4b81c7851e9aa8d92752747d7
   image:
     tag: 29.0-util
   ln:
@@ -177,7 +302,7 @@ nodes:
       command:
       - /bin/sh
       - -c
-      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cMgS8GSH5eqRWwN1bEreRExg4HAuuAvFhExVZySRa2YvbWRfbHck\)#vhl7q2u0\"\,\"timestamp\":0}]
+      - bitcoin-cli createwallet miner && bitcoin-cli importdescriptors [{\"desc\":\"combo\(cUE7NTwuvTmLkmXmHgqSHMUVkbbR7APfYewydm3QD76zkYWDJxc6\)#s6yc3g89\"\,\"timestamp\":0}]
     failureThreshold: 10
     periodSeconds: 30
     successThreshold: 1

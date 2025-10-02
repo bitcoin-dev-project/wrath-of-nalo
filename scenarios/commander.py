@@ -105,7 +105,10 @@ for pod in pods.items:
     if pod.metadata.labels["mission"] == "lightning":
         if "lnd" in pod.metadata.labels["app.kubernetes.io/name"]:
             lnnode = LND(
-                pod.metadata.name, pod.metadata.namespace, pod.status.pod_ip, pod.metadata.annotations["adminMacaroon"]
+                pod.metadata.name,
+                pod.metadata.namespace,
+                pod.status.pod_ip,
+                pod.metadata.annotations["adminMacaroon"],
             )
         if "cln" in pod.metadata.labels["app.kubernetes.io/name"]:
             lnnode = CLN(pod.metadata.name, pod.metadata.namespace, pod.status.pod_ip)
@@ -264,7 +267,9 @@ class Commander(BitcoinTestFramework):
             self.nodes.append(node)
             self.tanks[tank["tank"]] = node
 
+        self.ln_nodes = []
         for ln in WARNET["lightning"]:
+            self.ln_nodes.append(ln)
             self.lns[ln.name] = ln
 
         self.num_nodes = len(self.nodes)
