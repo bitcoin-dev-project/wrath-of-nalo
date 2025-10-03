@@ -2,6 +2,7 @@
 
 import json
 import os
+import random
 import secrets
 import sys
 import yaml
@@ -333,7 +334,8 @@ class Game:
             if tgt in self.channels["target_by_source"] and src in self.channels["target_by_source"][tgt]:
                 print(f" avoiding reverse {src.name}->{tgt.name}")
                 continue
-            self.add_channel(src, tgt, 300000, {"push_amt": 150000})
+            capacity = random.randint(1000000, 10000000)
+            self.add_channel(src, tgt, capacity, {"push_amt": random.randint(capacity // 8, capacity // 2)})
             n -= 1
 
     def add_miner(self):
@@ -429,16 +431,14 @@ class Game:
 
 
 g = Game("signet100", "signet")
-# g.add_nodes(100)
-# g.add_random_channels(500)
 g.add_payment_routes(len(TEAMS))
+g.add_nodes(40)
+g.add_random_channels(200)
 g.add_miner()
 g.write()
 g.write_armies(len(TEAMS))
 
 g = Game("regtest4", "regtest")
-# g.add_nodes(4)
-# g.add_random_channels(6)
 g.add_payment_routes(1)
 g.add_miner()
 g.write()
