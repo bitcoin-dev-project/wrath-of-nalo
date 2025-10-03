@@ -12,4 +12,4 @@ warnet deploy armadas/$1 --to-all-users
 warnet run scenarios/arm_armada.py --debug --admin
 warnet run scenarios/miner_std.py --tank=miner
 warnet run scenarios/ln_activity.py
-./upload_grafana_dashboard.py
+./scripts/upload_grafana_dashboard.py
