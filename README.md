@@ -118,6 +118,11 @@ and find nodes to attack. It will be essential for you to determine the
 [public identity key](https://github.com/lnbook/lnbook/blob/develop/14_encrypted_transport.asciidoc#the-channel-graph-as-decentralized-public-key-infrastructure)
 of the Lightning Network nodes you want to connect to.
 
+The alias presented in the visualizer can also be used as a hostname
+for Lightning Network p2p connections. Notice the suffix `.default` which
+is a domain name applied by kubernetes and must be used when connecting
+(see [Warnet CLI](#warnet-command-line-interface) below).
+
 The data feed for this visualizer updates every 60 seconds. You may need
 to frequently refresh it by clicking the top-right gear icon,
 clicking `Delete Local Graph Database`, and then reloading the webpage.
@@ -149,6 +154,10 @@ and Lightning Network nodes you have access to:
 You can execute all
 [`lncli` commands](https://lightning.engineering/api-docs/api/lnd/)
 through the Warnet interface by replacing `lncli` with `warnet ln rpc <node name>`.
+
+For p2p connections, including `openchannel` with the `--connect` option, be sure
+to include the complete hostname of the node you want to connect to, including
+the `.default` suffix, e.g. `spender-aries-ln.default`.
 
 <details>
 <summary>Expand this section to see some examples</summary>
