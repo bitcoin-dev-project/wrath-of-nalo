@@ -20,23 +20,19 @@ class LNChannelJam(Commander):
         ########
         # Setup:
         #
-        # 1. Find a target node on the network and identify all its channel partners:
+        # 1. Find your target node on the network and identify all its channel partners:
         #
-        #       +---Node A
-        #      /
-        # Target----Node B
-        #      \
-        #       +---Node C
+        #    <spender> --- <router> --- <recipient>
         #
-        # 2. Create channels from attacker nodes to the target and its peers.
-        #    You will have to open multiple channels from one attacker to the target
-        #    because you will jam one of your own channels for each one of the target's!
+        # 2. Create channels from attacker nodes to the target THROUGH its peers.
+        #    You may have to open multiple channels from the attacker nodes
+        #    to ensure you have anough HTLC capacity and BTC liquidity.
         #
-        #              +-+       +---Node A---+
-        #             /   \     /              \
-        # armada-1-ln -----Target----Node B---- armada-2-ln
-        #             \   /     \              /
-        #              +-+       +---Node C---+
+        #                   +-+                                          +-+
+        #                  /   \                                        /   \
+        #    [armada-1-ln] ----- <spender> --- <router> --- <recipient> ----- [armada-2-ln]
+        #                  \   /                                        \   /
+        #                   +-+                                          +-+
         #
         # 3. Run this scenario, which will generate and attempt to pay "hold invoices"
         #    between the two attack nodes. Eventually these attempts will start to

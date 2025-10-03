@@ -29,15 +29,13 @@ class ArmArmada(Commander):
                 tanks.append(ln)
         self.log.info(f"Armada tanks:\n{[f'{ln.name}.{ln.namespace}' for ln in tanks]}")
         self.log.info("Getting Armada LN wallet addresses...")
-        self.log.info([ln.name for ln in self.lns.values()])
-        self.log.info(ln.name for ln in tanks)
         outputs = {}
 
         def get_ln_addr(self, ln):
             while True:
                 try:
                     address = ln.newaddress()
-                    self.log.info(f"Got wallet address {address} from {ln.name}")
+                    self.log.info(f"Got wallet address {address} from {ln.name}.{ln.namespace}")
                     outputs[address] = FUNDS_PER_TANK / FUNDING_TXS_COUNT
                     break
                 except Exception as e:
@@ -59,7 +57,7 @@ class ArmArmada(Commander):
 
         for i in range(FUNDING_TXS_COUNT):
             self.log.info(f"Sending funding tx {i} of {FUNDING_TXS_COUNT}")
-            res = self.tanks["miner"].sendmany(amounts=outputs)
+            res = self.tanks["miner"].sendmany(amounts=outputs, fee_rate=1)
             self.log.info(res)
 
         self.generatetoaddress(self.tanks["miner"], 1, self.tanks["miner"].getnewaddress())

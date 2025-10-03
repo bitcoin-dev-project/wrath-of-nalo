@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
   "panels": [
     {
@@ -424,6 +423,5 @@
   "timepicker": {},
   "timezone": "",
   "title": "Channel Jamming Dashboard",
-  "uid": "2ecb1111-c511-4f11-a811-eab1e3ca1111",
   "version": 1
 }
