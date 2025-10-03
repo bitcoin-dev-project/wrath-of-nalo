@@ -1,6 +1,157 @@
 # Warnet: The Wrath Of Nalo
+## An online, interactive Bitcoin attack contest.
 
 ![nalo](./docs/nalo-legend.jpg)
+
+## Objectives
+
+You will be assigned a team (for example _"aries"_). Your team name identifies
+nodes on the network that are designated as your attack targets. When these
+nodes suffer, your team's score will increase.
+
+To earn points for your team, complete these attacks against your designated targets:
+
+### Channel Jamming
+
+There are three nodes connected by a chain of Lightning Network channels:
+
+`<spender> --- <router> --- <recipient>`
+
+Every 5 seconds, `<spender>` requests a 600-satoshi invoice from `recipient`
+and attempts to pay that invoice through the `<router>` node.
+
+Your goal is to stop those payments by jamming those channels with "hold invoices":
+- https://bitcoinops.org/en/topics/channel-jamming-attacks/
+- https://bitcoinops.org/en/topics/hold-invoices/
+
+## Environment
+
+The simulated network is run in a kubernetes cluster using
+[Warnet](https://github.com/bitcoin-dev-project/warnet).
+You will have to install and set up Warnet on your local device to interact
+with the cluster. You will also have the option to run your own miniature
+simulation locally if you want to poke around or test out your attacks before
+deploying them to the battlefield.
+
+### Signet
+
+The battlefield runs on a Signet network, meaning only the game administrator
+can generate blocks. A new block is added to the chain every 60 seconds. Keep
+in mind channel open transactions require a few confirmations before payments
+can be sent!
+
+Your armada Lightning Network nodes will be funded with signet BTC before the
+game starts, so you can begin opening channels right away.
+
+
+### Install and setup Warnet
+
+1. Clone this directory
+```
+git clone https://github.com/bitcoin-dev-project/wrath-of-nalo
+cd wrath-of-nalo
+```
+
+2. Create a python virtual environment
+```
+python -m venv .venv && source .venv/bin/activate
+```
+
+3. Install Warnet FROM PIP (NOT GITHUB)
+```
+pip install warnet
+```
+
+Make sure you installed correctly -- no other version string will work!
+```
+$ warnet version
+warnet version 1.1.14
+```
+
+4. Set up Warnet
+This command will determine some options and then install Warnet's dependencies
+into your local virtual environment. If you want to run the mini-cluster locally
+for testing you should select Docker Desktop (MacOS) or Minikube (Linux).
+```
+warnet setup
+```
+
+## Enter the game
+
+The administrator will give everyone on your team a `kubeconfig` file which will
+give your Warnet client access to small set of Bitcoin and Lightning Network nodes.
+You have full control over these nodes, they are your armada.
+```
+warnet auth /path/to/warnet-user-wargames-kubeconfig
+```
+
+If you are also running the local test environment you can switch back to your
+original kubernetes context with the approriate command:
+```
+kubeconfig use-context docker-desktop
+kubeconfig use-context minikube
+```
+
+## Explore the network
+
+You can open the network dashboard in a web browser:
+```
+warnet dashboard
+```
+
+You'll notice links to two services there:
+
+### Grafana
+
+From the Grafana landing page, select `Dashboards` and then `Channel Jamming Dashboard`.
+
+This will serve as our contest scoreboard. A team has succefully jammed their
+target when the `router` pending HTLCs hits its protocol limit and the corresponding
+`spender` indicates failed payments.
+
+![grafana](./docs/grafana.png)
+
+### LnVisualizer
+
+This is your Lightning Network explorer. Use it to evaluate network topology
+and find nodes to attack. It will be essential for you to determine the
+[public identity key](https://github.com/lnbook/lnbook/blob/develop/14_encrypted_transport.asciidoc#the-channel-graph-as-decentralized-public-key-infrastructure)
+of the Lightning Network nodes you want to connect to.
+
+The data feed for this visualizer updates every 60 seconds. You may need
+to frequently refresh it by clicking the top-right gear icon,
+clicking `Delete Local Graph Database`, and then reloading the webpage.
+
+![lnvisualizer.png](./docs/lnvisualizer.png)
+
+### K9s (optional installation)
+
+https://k9scli.io/
+
+This is a very handy text-based terminal interface for managing kubernetes clusters.
+It's optional but you might enjoy how easy it is to SSH into your nodes or diagnose issues.
+
+## ATTACK !!!
+
+You will use Warnet to coordinate your attacks and interact with your armada.
+You can run individual commands from your terminal or write a
+[scenario](https://github.com/bitcoin-dev-project/warnet/blob/main/docs/scenarios.md)
+which is a python script that can be deployed into the cluster and execute long series
+of commands to multiple nodes.
+
+### Warnet command line interface
+
+To start, try `warnet status`. This will display the Bitcoin full nodes ("Tanks")
+and Lightning Network nodes you have access to:
+
+![status](./docs/status.png)
+
+You can execute all
+[`lncli` commands](https://lightning.engineering/api-docs/api/lnd/)
+through the Warnet interface by replacing `lncli` with `warnet ln rpc <node name>`.
+
+<details>
+<summary>Expand this section to see some examples</summary>
 
 ```
 (.venv) $ warnet ln rpc armada-1-ln walletbalance
@@ -20,21 +171,9 @@
 ```
 
 ```
-(.venv) $ warnet ln rpc armada-1-ln connect 02dceade95abc5635611f3e096ff7d8c7491006f4742d9ed581ccc23d317a37ed8@tank-0002-ln.default
-{
-    "status":  "connection to 02dceade95abc5635611f3e096ff7d8c7491006f4742d9ed581ccc23d317a37ed8@10.108.5.24:9735 initiated"
-}
-```
-
-```
-(.venv) $ warnet ln rpc armada-1-ln openchannel --local_amt=12345678 039e483a49be48fde184e0fca39d53c7a12639212e25dc16c6e7149687b5e636e2
-{
-    "funding_txid": "39dd8f08511c3955143b3b90f6cbd72779566c1d093b59443de661b06e0e273b"
-}
-```
-
-```
-(.venv) $ warnet ln rpc armada-1-ln openchannel 0328ed8ed73d267c117fa7406eb093458fce613a06aec9dc18df1a313d12895e5a --connect tank-0000-ln.default --local_amt=10000000
+(.venv) $ warnet ln rpc armada-1-ln openchannel \
+  0328ed8ed73d267c117fa7406eb093458fce613a06aec9dc18df1a313d12895e5a \
+  --connect tank-0000-ln.default --local_amt=10000000
 {
     "funding_txid": "1840a6d8a003f89abf1a633fee32bae8b96cf1707df174f852a4ee98f2f36718"
 }
@@ -73,3 +212,27 @@
     "waiting_close_channels":  []
 }
 ```
+</details>
+
+### Warnet scenarios
+
+You can create your own scenario files or modify some of those included in [/scenarios](./scenarios).
+
+Once you have your attacker channels set up correctly you can use a scenario to
+start a channel-jamming attempt. Review the
+[`ln_channel_jam` scenario](./scenarios/ln_channel_jam.py), modify it if you like,
+and then run it from your terminal.
+
+
+```
+warnet run scenarios/ln_channel_jam.py --debug
+```
+
+The `--debug` flag will stream the scenario's
+log output to your terminal. If you omit that flag the scenario will run entirely
+in the cluster until it exits. You can still stream its logs or cancel it using
+`warnet stop`.
+
+## Local testing
+
+
