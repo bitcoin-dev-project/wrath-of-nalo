@@ -88,8 +88,8 @@ warnet auth /path/to/warnet-user-wargames-kubeconfig
 If you are also running the local test environment you can switch back to your
 original kubernetes context with the approriate command:
 ```
-kubeconfig use-context docker-desktop
-kubeconfig use-context minikube
+kubectl config use-context docker-desktop
+kubectl config use-context minikube
 ```
 
 ## Explore the network
@@ -235,4 +235,24 @@ in the cluster until it exits. You can still stream its logs or cancel it using
 
 ## Local testing
 
+If you have Docker Desktop
+[with Kubernetes enabled](https://docs.docker.com/desktop/features/kubernetes/)
+or Minikube installed locally, you can deploy a single-team network on a regtest
+chain, giving you full administrative control and the ability to interact with
+the target nodes as well.
 
+
+Deploy the local test network by running the included script:
+```
+./scripts/deploy.sh regtest4
+```
+
+And then follow all the same directions above. This script will also generate
+a new kubeconfig for the single team in your local network which you can load
+with `warnet auth ...` to return to the admin position you must reset your
+kubernetes context with `kubectl config use-context...` as explained above.
+
+Shut down the local network (from the admin position):
+```
+warnet down --force
+```
