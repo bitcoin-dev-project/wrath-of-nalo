@@ -41,8 +41,11 @@ can generate blocks. A new block is added to the chain every 60 seconds. Keep
 in mind channel open transactions require a few confirmations before payments
 can be sent!
 
-Your armada Lightning Network nodes will be funded with signet BTC before the
-game starts, so you can begin opening channels right away.
+You are in complete control of a small group of Bitcoin Core and LND nodes called
+your "armada". Your armada Lightning Network nodes will be funded with signet BTC
+before the game starts, so you can begin opening channels right away. You can run
+`lncli` and `bitcoin-cli` commands on these nodes, and ssh into their containers.
+There are more than a hundred other nodes on the network you do *not* have access to!
 
 
 ### Install and setup Warnet
@@ -63,7 +66,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install warnet
 ```
 
-Make sure you installed correctly -- no other version string will work!
+> [!WARNING]
+> Make sure you installed Warnet correctly -- ONLY VERSION 1.1.15 will work.
+> If you do not see the correct version, reinstall Warnet or ask for help.
+
 ```
 $ warnet version
 warnet version 1.1.15
@@ -279,5 +285,9 @@ warnet auth --revert
 
 Shut down the local network (from the admin position):
 ```
-warnet down --force
+warnet down
 ```
+
+> [!WARNING]
+> Be careful you are not authorized to your team's actual armada on the battlefield!
+> You may inadvertently shut down your own attacker nodes!
