@@ -91,7 +91,7 @@ warnet auth /path/to/warnet-user-wargames-kubeconfig
 
 > [!WARNING]
 > Do not execute `warnet auth` if you plan to test locally.
-> Read through the [local testing section](#local-testing) first.
+> Read through the [local testing section](##%EF%B8%8F-local-testing) first.
 
 If you are also running the local test environment you can switch back to your
 original kubernetes context with the command:
