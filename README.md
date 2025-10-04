@@ -1,5 +1,5 @@
 # Warnet: The Wrath Of Nalo
-## An online, interactive Bitcoin attack contest.
+## An online, interactive Bitcoin Lightning Network attack contest.
 
 ![nalo](./docs/nalo-legend.jpg)
 
@@ -17,8 +17,9 @@ There are three nodes connected by a chain of Lightning Network channels:
 
 `<spender> --- <router> --- <recipient>`
 
-Every 5 seconds, `<spender>` requests a 600-satoshi invoice from `recipient`
-and attempts to pay that invoice through the `<router>` node.
+Every 5 seconds, `<spender>` attempts to send a 600-satoshi
+[keysend payment](https://bitcoinops.org/en/topics/spontaneous-payments/)
+to `recipient` through the `<router>` node.
 
 Your goal is to stop those payments by jamming those channels with "hold invoices":
 - https://bitcoinops.org/en/topics/channel-jamming-attacks/
