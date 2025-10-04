@@ -70,11 +70,15 @@ warnet version 1.1.14
 
 4. Set up Warnet
 This command will determine some options and then install Warnet's dependencies
-into your local virtual environment. If you want to run the mini-cluster locally
-for testing you should select Docker Desktop (MacOS) or Minikube (Linux).
+into your local virtual environment.
 ```
 warnet setup
 ```
+
+> [!WARNING]
+> If you plan on testing locally you will need Docker Desktop (MacOS) or Minikube (Linux).
+> If you do NOT want to run a local cluster for testing, you can choose "No Backend"
+> and connect directly to the remote cluster to enter the game.
 
 ## Enter the game
 
@@ -85,11 +89,14 @@ You have full control over these nodes, they are your armada.
 warnet auth /path/to/warnet-user-wargames-kubeconfig
 ```
 
+> [!CAUTION]
+> Do not execute `warnet auth` if you plan to test locally.
+> Read through the [local testing section](#local-testing) first.
+
 If you are also running the local test environment you can switch back to your
-original kubernetes context with the approriate command:
+original kubernetes context with the command:
 ```
-kubectl config use-context docker-desktop
-kubectl config use-context minikube
+warnet auth --revert
 ```
 
 ## Explore the network
@@ -257,9 +264,17 @@ Deploy the local test network by running the included script:
 ```
 
 And then follow all the same directions above. This script will also generate
-a new kubeconfig for the single team in your local network which you can load
-with `warnet auth ...` to return to the admin position you must reset your
-kubernetes context with `kubectl config use-context...` as explained above.
+a new kubeconfig for the single team `aries` for your local network which you can load
+with:
+
+```
+warnet auth ./kubeconfigs/warnet-user-wargames-aries-kubeconfig
+```
+
+To return to the admin position you must reset your kubernetes context with:
+```
+warnet auth --revert
+```
 
 Shut down the local network (from the admin position):
 ```
