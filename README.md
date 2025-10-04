@@ -65,7 +65,7 @@ pip install warnet
 Make sure you installed correctly -- no other version string will work!
 ```
 $ warnet version
-warnet version 1.1.14
+warnet version 1.1.15
 ```
 
 4. Set up Warnet
