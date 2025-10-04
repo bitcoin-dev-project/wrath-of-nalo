@@ -3,7 +3,7 @@
 
 ![nalo](./docs/nalo-legend.jpg)
 
-## Objectives
+## ⚡️ Objectives
 
 You will be assigned a team (for example _"aries"_). Your team name identifies
 nodes on the network that are designated as your attack targets. When these
@@ -24,7 +24,7 @@ Your goal is to stop those payments by jamming those channels with "hold invoice
 - https://bitcoinops.org/en/topics/channel-jamming-attacks/
 - https://bitcoinops.org/en/topics/hold-invoices/
 
-## Environment
+## ⚡️ Environment
 
 The simulated network is run in a kubernetes cluster using
 [Warnet](https://github.com/bitcoin-dev-project/warnet).
@@ -80,7 +80,7 @@ warnet setup
 > If you do NOT want to run a local cluster for testing, you can choose "No Backend"
 > and connect directly to the remote cluster to enter the game.
 
-## Enter the game
+## ⚡️ Enter the game
 
 The administrator will give everyone on your team a `kubeconfig` file which will
 give your Warnet client access to small set of Bitcoin and Lightning Network nodes.
@@ -99,7 +99,7 @@ original kubernetes context with the command:
 warnet auth --revert
 ```
 
-## Explore the network
+## ⚡️ Explore the network
 
 You can open the network dashboard in a web browser:
 ```
@@ -143,7 +143,7 @@ https://k9scli.io/
 This is a very handy text-based terminal interface for managing kubernetes clusters.
 It's optional but you might enjoy how easy it is to SSH into your nodes or diagnose issues.
 
-## ATTACK !!!
+## ⚡️ ATTACK !!!
 
 You will use Warnet to coordinate your attacks and interact with your armada.
 You can run individual commands from your terminal or write a
@@ -249,7 +249,7 @@ log output to your terminal. If you omit that flag the scenario will run entirel
 in the cluster until it exits. You can still stream its logs or cancel it using
 `warnet stop`.
 
-## Local testing
+## ⚡️ Local testing
 
 If you have Docker Desktop
 [with Kubernetes enabled](https://docs.docker.com/desktop/features/kubernetes/)
