@@ -89,7 +89,7 @@ You have full control over these nodes, they are your armada.
 warnet auth /path/to/warnet-user-wargames-kubeconfig
 ```
 
-> [!CAUTION]
+> [!WARNING]
 > Do not execute `warnet auth` if you plan to test locally.
 > Read through the [local testing section](#local-testing) first.
 
