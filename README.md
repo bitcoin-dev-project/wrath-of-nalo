@@ -84,12 +84,12 @@ pip install warnet
 ```
 
 > [!WARNING]
-> Make sure you installed Warnet correctly -- at least version 1.1.17 is required.
+> Make sure you installed Warnet correctly -- at least version 1.1.18 is required.
 > If you do not see the correct version, reinstall Warnet or ask for help.
 
 ```
 $ warnet version
-warnet version 1.1.17
+warnet version 1.1.18
 ```
 
 4. Set up Warnet
