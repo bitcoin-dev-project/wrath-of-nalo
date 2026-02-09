@@ -19,7 +19,7 @@ class LNChannelJam(Commander):
         # Some node name
         SENDER =
         # Some other node name
-        RECIEVER =
+        RECEIVER =
         # Some integer
         AMT_SATS = 
 
@@ -28,7 +28,7 @@ class LNChannelJam(Commander):
         # Create a hold invoice on a LN node using the REST API
         # https://lightning.engineering/api-docs/api/lnd/invoices/add-hold-invoice/
         payment_hash = base64.b64encode(random.randbytes(32)).decode()
-        response = self.lns[RECIEVER].post(
+        response = self.lns[RECEIVER].post(
             "/v2/invoices/hodl",
             data={
                 "value": AMT_SATS,
@@ -36,7 +36,7 @@ class LNChannelJam(Commander):
             }
         )
         json_response = json.loads(response)
-        self.log.info(f"Got hold invoice from {RECIEVER}: add_index: {json_response['add_index']}")
+        self.log.info(f"Got hold invoice from {RECEIVER}: add_index: {json_response['add_index']}")
         invoice = json_response["payment_request"]
 
         # Attempt to pay the invoice on some other node using warnet helper functions
