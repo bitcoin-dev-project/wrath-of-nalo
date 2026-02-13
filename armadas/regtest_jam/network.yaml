@@ -5,7 +5,9 @@ nodes:
 
     uacomment=armada-1
 
-    coinstatsindex=1'
+    coinstatsindex=1
+
+    txindex=1'
   global:
     chain: regtest
     rpcpassword: d2110e930e4be58a57d01c9ae2f919ea
@@ -21,6 +23,7 @@ nodes:
     config: color=#3399FF
     image:
       tag: v0.19.0-beta
+    cipherSeedMnemonic: [above, rookie, pioneer, pen, truck, board, spatial, pond, destroy, civil, vote, zebra, coral, love, height, price, nephew, better, bar, wife, chaos, clock, pottery, rifle]
     macaroonRootKey: Pc94PkWjpvqDpWs21azIv9lJRFOx8k0h62MohGPTSyk=
   name: armada-1
 - addnode:
@@ -45,6 +48,7 @@ nodes:
     config: color=#3399FF
     image:
       tag: v0.19.0-beta
+    cipherSeedMnemonic: [absent, roof, measure, note, across, simple, error, sense, urban, toy, punch, logic, phrase, humor, common, inner, gift, barrel, speed, skirt, ivory, team, muscle, fall]
     macaroonRootKey: JhWsx2/YUnPhyPA1pqpjXp0jnY5NagNpPkcul0/BDNw=
   name: armada-2
 - addnode:
@@ -69,5 +73,6 @@ nodes:
     config: color=#3399FF
     image:
       tag: v0.19.0-beta
+    cipherSeedMnemonic: [abandon, combine, city, social, coyote, hurdle, scissors, aerobic, crisp, capable, crazy, people, apology, zoo, lemon, inhale, ripple, whip, ribbon, keen, truth, fog, velvet, cycle]
     macaroonRootKey: 6VwzaVE4nO7O3v3FnYixNOdskToZ0VPFoUijDGSVKyI=
   name: armada-3

@@ -5,7 +5,9 @@ nodes:
 
     uacomment=armada-1
 
-    coinstatsindex=1'
+    coinstatsindex=1
+
+    txindex=1'
   global:
     chain: regtest
     rpcpassword: acefc08043b5e61dff002eb8af2d04f9

@@ -7,7 +7,9 @@ nodes:
 
     signetchallenge=001452ca3a0e20895d05e7283a93c479205aee9d8723
 
-    coinstatsindex=1'
+    coinstatsindex=1
+
+    txindex=1'
   global:
     chain: signet
     rpcpassword: 1d19406514d1f73d347c668b4a8ff023
