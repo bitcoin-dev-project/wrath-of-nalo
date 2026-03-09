@@ -157,43 +157,43 @@ class LNP2PMessage(Commander):
             except:
                 self.log.error(f"Could not parse message from peer:\n{stream.getvalue().hex()}")
 
-            ########
-            # API for the Message class:
-            # https://github.com/ElementsProject/lightning/blob/c7531b0f8f5fc14a46cd05525f8cb9b3bdebeb5d/contrib/pyln-proto/pyln/proto/message/message.py#L594
-            # (messagetype: MessageType, **kwargs)
-            # "MessageType is the type of this msg, with fields.
-            #  Fields can either be valid values for the type,"
-            #  or if they are strings they are converted according
-            #  to the field type"
-            ########
-            init_msg = Message(ns.get_msgtype("init"),
-                                globalfeatures=b"\x12\x00",
-                                # feature bits naively copied from a message sent by LND
-                                features=bytes.fromhex(
-                                    "800000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000000000000000000000000000000000000000" +
-                                    "000000000000002000888252a1"))
-            # Send init
-            send(init_msg)
-            # Receive init
-            recv()
+        ########
+        # API for the Message class:
+        # https://github.com/ElementsProject/lightning/blob/c7531b0f8f5fc14a46cd05525f8cb9b3bdebeb5d/contrib/pyln-proto/pyln/proto/message/message.py#L594
+        # (messagetype: MessageType, **kwargs)
+        # "MessageType is the type of this msg, with fields.
+        #  Fields can either be valid values for the type,"
+        #  or if they are strings they are converted according
+        #  to the field type"
+        ########
+        init_msg = Message(ns.get_msgtype("init"),
+                            globalfeatures=b"\x12\x00",
+                            # feature bits naively copied from a message sent by LND
+                            features=bytes.fromhex(
+                                "800000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000000000000000000000000000000000000000" +
+                                "000000000000002000888252a1"))
+        # Send init
+        send(init_msg)
+        # Receive init
+        recv()
 
-            # Build ping
-            ping_msg = Message(ns.get_msgtype("ping"),
-                               num_pong_bytes=0,
-                               ignored=b"")
-            # Send ping
-            send(ping_msg)
-            # Receive pong
-            recv()
+        # Build ping
+        ping_msg = Message(ns.get_msgtype("ping"),
+                            num_pong_bytes=0,
+                            ignored=b"")
+        # Send ping
+        send(ping_msg)
+        # Receive pong
+        recv()
 
 def main():
     LNP2PMessage("").main()
